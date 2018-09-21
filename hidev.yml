@@ -1,0 +1,7 @@
+package:
+    type:       yii2-extension
+    name:       hiapi-nicru
+    title:      hiAPI NIC.ru plugin
+    keywords:   hiapi, hipnale, nic.ru
+    description:    |
+        NIC.ru integration plugin for hiAPI
