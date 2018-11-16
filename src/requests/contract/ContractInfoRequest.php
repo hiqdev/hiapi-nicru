@@ -9,9 +9,12 @@
  * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
  */
 
-namespace hiapi\nicru\requests;
+namespace hiapi\nicru\requests\contract;
 
-class HostDeleteRequest extends HostAbstractRequest
+
+class ContractInfoRequest extends ContractAbstractRequest
 {
-    protected $operation = 'delete';
+    protected $bodyVariables = [
+        'domain' => 'domain',
+    ];
 }

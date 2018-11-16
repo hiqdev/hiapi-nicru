@@ -9,9 +9,9 @@
  * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
  */
 
-namespace hiapi\nicru\requests;
+namespace hiapi\nicru\requests\host;
 
-class OrderInfoRequest extends OrderAbstractRequest
+class HostDeleteRequest extends HostAbstractRequest
 {
-    protected $operation = 'get';
+    protected $operation = 'delete';
 }

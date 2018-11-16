@@ -9,16 +9,13 @@
  * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
  */
 
-namespace hiapi\nicru\requests;
+namespace hiapi\nicru\requests\host;
 
-class DomainsSearchRequest extends DomainAbstractRequest
+class HostInfoRequest extends HostAbstractRequest
 {
     protected $operation = 'search';
-    protected $request = 'service-object';
-    protected $header = 'service-object';
     protected $bodyStatic = [
-        'service' => 'domain',
-        'service-objects-limit' => 64000,
-        'service-objects-first' => 1,
+        'server-limit' => 1,
+        'server-first' => 1,
     ];
 }

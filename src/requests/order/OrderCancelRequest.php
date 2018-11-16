@@ -9,7 +9,7 @@
  * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
  */
 
-namespace hiapi\nicru\requests;
+namespace hiapi\nicru\requests\order;
 
 class OrderCancelRequest extends OrderAbstractRequest
 {

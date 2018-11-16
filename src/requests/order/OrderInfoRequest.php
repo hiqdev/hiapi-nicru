@@ -9,13 +9,9 @@
  * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
  */
 
-namespace hiapi\nicru\requests;
+namespace hiapi\nicru\requests\order;
 
-class HostInfoRequest extends HostAbstractRequest
+class OrderInfoRequest extends OrderAbstractRequest
 {
-    protected $operation = 'search';
-    protected $bodyStatic = [
-        'server-limit' => 1,
-        'server-first' => 1,
-    ];
+    protected $operation = 'get';
 }

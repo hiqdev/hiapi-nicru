@@ -9,28 +9,23 @@
  * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
  */
 
-namespace hiapi\nicru\requests;
+namespace hiapi\nicru\requests\order;
 
-class DomainUpdateRequest extends DomainAbstractRequest
+use hiapi\nicru\requests\AbstractRequest;
+
+class OrderAbstractRequest extends AbstractRequest
 {
-    protected $operation = 'create';
     protected $request = 'order';
-    protected $header = 'order-item';
-    protected $bodyStatic = [
-        'service' => 'domain',
-        'action' => 'update',
-        'check-ns' => 'OFF',
-    ];
+    protected $header = 'order';
     protected $bodyVariables = [
-        'domain' => 'domain',
-        'nserver' => 'nss,array',
+        'order_id' => 'order_id',
     ];
-
     protected $answer = [
         'delimiter' => 'order',
         'fields' => [
+            'subject-contract' => 'contract',
             'order_id' => 'order_id',
+            'state' => 'state',
         ],
     ];
-
 }

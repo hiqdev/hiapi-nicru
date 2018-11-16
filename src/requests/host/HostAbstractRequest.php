@@ -9,7 +9,9 @@
  * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
  */
 
-namespace hiapi\nicru\requests;
+namespace hiapi\nicru\requests\host;
+
+use hiapi\nicru\requests\AbstractRequest;
 
 class HostAbstractRequest extends AbstractRequest
 {

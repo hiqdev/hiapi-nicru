@@ -9,9 +9,9 @@
  * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
  */
 
-namespace hiapi\nicru\requests;
+namespace hiapi\nicru\requests\domain;
 
-class DomainRenewRequest extends AbstractRequest
+class DomainRenewRequest extends DomainAbstractRequest
 {
     protected $operation = 'create';
     protected $request = 'order';

@@ -10,10 +10,10 @@
 
 namespace hiapi\nicru\modules;
 
-use hiapi\nicru\requests\DomainInfoRequest;
-use hiapi\nicru\requests\DomainRenewRequest;
-use hiapi\nicru\requests\DomainUpdateRequest;
-use hiapi\nicru\requests\DomainsSearchRequest;
+use hiapi\nicru\requests\domain\DomainInfoRequest;
+use hiapi\nicru\requests\domain\DomainRenewRequest;
+use hiapi\nicru\requests\domain\DomainUpdateRequest;
+use hiapi\nicru\requests\domain\DomainsSearchRequest;
 
 /**
  * Domain operations.

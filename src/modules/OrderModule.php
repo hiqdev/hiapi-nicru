@@ -10,8 +10,8 @@
 
 namespace hiapi\nicru\modules;
 
-use hiapi\nicru\requests\OrderInfoRequest;
-use hiapi\nicru\requests\OrderCancelRequest;
+use hiapi\nicru\requests\order\OrderInfoRequest;
+use hiapi\nicru\requests\order\OrderCancelRequest;
 
 /**
  * Domain operations.

@@ -10,11 +10,11 @@
 
 namespace hiapi\nicru\modules;
 
-use hiapi\nicru\requests\HostInfoRequest;
-use hiapi\nicru\requests\HostCreateRequest;
-use hiapi\nicru\requests\HostUpdateRequest;
-use hiapi\nicru\requests\HostDeleteRequest;
-use hiapi\nicru\requests\HostsSearchRequest;
+use hiapi\nicru\requests\host\HostInfoRequest;
+use hiapi\nicru\requests\host\HostCreateRequest;
+use hiapi\nicru\requests\host\HostUpdateRequest;
+use hiapi\nicru\requests\host\HostDeleteRequest;
+use hiapi\nicru\requests\host\HostsSearchRequest;
 
 /**
  * Domain operations.

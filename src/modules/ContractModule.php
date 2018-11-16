@@ -10,8 +10,8 @@
 
 namespace hiapi\nicru\modules;
 
-use hiapi\nicru\requests\ContractInfoRequest;
-use hiapi\nicru\requests\ContractsSearchRequest;
+use hiapi\nicru\requests\contract\ContractInfoRequest;
+use hiapi\nicru\requests\contract\ContractsSearchRequest;
 
 /**
  * Domain operations.

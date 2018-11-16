@@ -9,9 +9,11 @@
  * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
  */
 
-namespace hiapi\nicru\requests;
+namespace hiapi\nicru\requests\contract;
 
-class ContractInfoRequest extends AbstractRequest
+use hiapi\nicru\requests\AbstractRequest;
+
+class ContractAbstractRequest extends AbstractRequest
 {
     protected $operation = 'search';
     protected $request = 'contract';
@@ -19,9 +21,6 @@ class ContractInfoRequest extends AbstractRequest
     protected $bodyStatic = [
         'contracts-limit' => 1,
         'contracts-first' => 1,
-    ];
-    protected $bodyVariables = [
-        'domain' => 'domain',
     ];
     protected $answer = [
         'delimiter' => 'contract',
