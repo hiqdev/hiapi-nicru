@@ -29,6 +29,36 @@ class HttpClient
     }
 
     /**
+     * @param string $command
+     * @param array $data
+     * @return Response
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function fetchGet (string $command, AbstractRequest $request): Response
+    {
+        $query = $command . '?' . $this->prepareQuery($reuqest);
+        return $this->client->request('GET', $query);
+    }
+
+    /**
+     * @param string $command
+     * @param array|null $data
+     * @return Response
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function fetchPost (string $command, AbstractRequest $request): Response
+    {
+        $query = $this->prepareQuery($request);
+        $res = $this->client->request('POST',  $command, [
+            'body' => $query,
+            'headers' => [
+                'Content-Type' => 'application/x-www-form-urlencoded',
+            ],
+        ]);
+        return $res;
+    }
+
+    /**
      * @param array $data
      * @return string
      */
@@ -95,37 +125,7 @@ class HttpClient
         return array_filter($result);
     }
 
-    /**
-     * @param string $command
-     * @param array $data
-     * @return Response
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    public function fetchGet (string $command, AbstractRequest $request): Response
-    {
-        $query = $command . '?' . $this->prepareQuery($reuqest);
-        return $this->client->request('GET', $query);
-    }
-
-    /**
-     * @param string $command
-     * @param array|null $data
-     * @return Response
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    public function fetchPost (string $command, AbstractRequest $request): Response
-    {
-        $query = $this->prepareQuery($request);
-        $res = $this->client->request('POST',  $command, [
-            'body' => $query,
-            'headers' => [
-                'Content-Type' => 'application/x-www-form-urlencoded',
-            ],
-        ]);
-        return $res;
-    }
-
-    protected function setParsedValue($field, $value, $res)
+    private function setParsedValue($field, $value, $res)
     {
         if (empty($res[$field])) {
             $res[$field] = $value;
