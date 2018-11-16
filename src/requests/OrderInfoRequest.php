@@ -9,8 +9,9 @@
  * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
  */
 
-namespace hiapi\nicru\lib;
+namespace hiapi\nicru\requests;
 
-class Contact
+class OrderInfoRequest extends OrderAbstractRequest
 {
+    protected $operation = 'get';
 }

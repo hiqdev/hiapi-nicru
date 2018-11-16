@@ -10,11 +10,11 @@
 
 namespace hiapi\nicru;
 
-use hiapi\nicru\lib\Domain;
-use hiapi\nicru\lib\Host;
+use hiapi\nicru\modules\AbstractModule;
+use hiapi\nicru\modules\DomainModule;
+use hiapi\nicru\modules\HostModule;
+use hiapi\nicru\requests\AbstractRequest;
 use Exception;
-use err;
-use arr;
 
 /**
  * NIC.ru tool.
@@ -22,195 +22,105 @@ use arr;
 class NicRuTool extends \hiapi\components\AbstractTool
 {
 
-    protected $commands = [
-        'domainInfo' => [
-            'class' => Domain::class,
-            'command' => 'info',
-            'multiple' => false,
-        ],
-        'domainsInfo' => [
-            'mono' => 'domainInfo',
-            'multiple' => true,
-        ],
-        'domainSetNSs' => [
-            'class' => Domain::class,
-            'command' => 'update',
-            'multiple' => false,
-        ],
-        'domainsSetNSs' => [
-            'mono' => 'domainSetNSs',
-            'multiple' => true,
-        ],
-        'domainRenew' => [
-            'class' => Domain::class,
-            'command' => 'renew',
-            'multiple' => false,
-        ],
-        'domainsRenew' => [
-            'mono' => 'domainRenew',
-            'multiple' => true,
-        ],
-        'hostInfo' => [
-            'class' => Host::class,
-            'command' => 'info',
-            'multiple' => false,
-        ],
-        'hostsInfo' => [
-            'mono' => 'hostInfo',
-            'multiple' => true,
-        ],
-        'hostCreate' => [
-            'class' => Host::class,
-            'command' => 'create',
-            'multiple' => false,
-        ],
-        'hostsCreate' => [
-            'mono' => 'hostCreate',
-            'multiple' => true,
-        ],
-        'hostUpdate' => [
-            'class' => Host::class,
-            'command' => 'update',
-            'multiple' => false,
-        ],
-        'hostsUpdate' => [
-            'mono' => 'hostUpdate',
-            'multiple' => true,
-        ],
-        'hostDelete' => [
-            'class' => Host::class,
-            'command' => 'delete',
-            'multiple' => false,
-        ],
-        'hostsDelete' => [
-            'mono' => 'hostDelete',
-            'multiple' => true,
-        ],
-        'hostSet' => [
-            'class' => Host::class,
-            'command' => 'set',
-            'multiple' => false,
-        ],
-        'hostsSet' => [
-            'mono' => 'hostSet',
-            'multiple' => true,
-        ],
+    protected $url;
+    protected $login;
+    protected $password;
+
+    protected $httpClient = null;
+
+    protected $modules = [
+        'domain'    => DomainModule::class,
+        'domains'   => DomainModule::class,
+        'host'      => HostModule::class,
+        'hosts'     => HostModule::class,
     ];
 
     public function __construct($base = null, $data = null)
     {
         parent::__construct($base, $data);
-    }
-
-    public function __call($method, $data)
-    {
-        if (!array_key_exists($method, $this->commands)) {
-            return err::set($data[0], 'command not supported');
-        }
-
-        if ($this->commands[$method]['multiple']) {
-            return $this->callMultiple($this->commands[$method]['mono'], $data[0]);
-        }
-
-        return $this->callSingle($method, $data[0]);
-    }
-
-    public function domainsLoadInfo($rows = [])
-    {
-        unset($rows['dummy'], $rows['access_id']);
-        if (!empty($rows)) {
-            return $this->callMultiple('domainInfo', $rows);
-        }
-
-        $object = new Domain($this->data);
-        try {
-            return $object->loadInfo();
-        } catch (Exception $e) {
-            return err::set($rows, $e->getMessage());
-        }
-    }
-
-    public function domainsLoadNicRu($rows = [])
-    {
-        return $this->domainsLoadInfo();
-    }
-
-    public function hostSet($row)
-    {
-        try {
-            $parts = explode(".", $row['host']);
-            $zone = array_pop($parts);
-            if (!in_array($zone, ['ru', 'su', 'рф', 'xn--p1ai'], true)) {
-                $object = new Host($this->data);
-                return $object->set($row);
+        foreach (['url','login','password'] as $key) {
+            if (empty($data[$key])) {
+                throw new Exception("`$key` must be given for NicRuTool");
             }
-            $object = new Domain($this->data);
-            $nss = $tmp_nss = $this->_prepareNSs([
-                'domain' => $row['domain'],
-                'nss' => arr::get($this->base->domainGetNSs($row), 'nss'),
-            ]);
-            $tmp_nss[$row['host']] = $row['host'] ." " . (reset($row['ips']) ?: $row['ip']);
-            if (count($tmp_nss) < 2) {
-                $tmp_nss['ns1.topdns.me'] = 'ns1.topdns.me';
-            }
-
-            $res = $object->update([
-                'domain' => $row['domain'],
-                'nss' => $tmp_nss,
-            ]);
-
-            return $object->update([
-                'domain' => $row['domain'],
-                'nss' => $nss,
-            ]);
-        } catch (Exception $e) {
-            return err::set($row, $e->getMessage());
+            $this->{$key} = $data[$key];
         }
     }
 
-    public function hostsSet($rows)
+    public function __call($command, $args)
     {
-        foreach ($rows as $id => $row) {
-            $res[$id] = $this->hostSet($row);
-        }
+        $parts = preg_split('/(?=[A-Z])/', $command);
+        $entity = reset($parts);
+        $module = $this->getModule($entity);
+
+        return call_user_func_array([$module, $command], $args);
     }
 
-    protected function callSingle($method, $data)
+    public function __get($name)
     {
-        $objectData = $this->commands[$method];
-        $class = $objectData['class'];
-        $object = new $class($this->data);
-        try {
-            $res = call_user_func([$object, $objectData['command']], $data);
-        } catch (Exception $e) {
-            return err::set($data, $e->getMessage());
-        }
-
-        return $res;
+        return $this->{$name};
     }
 
-    protected function callMultiple($method, $data)
+    public function getModule($name)
     {
-        foreach ($data as $id => $row) {
-            $res[$id] = $this->callSingle($method, $row);
+        if (empty($this->modules[$name])) {
+            throw new InvalidCallException("module `$name` not found");
+        }
+        $module = $this->modules[$name];
+        if (!is_object($module)) {
+            $this->modules[$name] = $this->createModule($module);
         }
 
-        return err::reduce($res);
+        return $this->modules[$name];
     }
 
-    protected function _prepareNSs ($row)
+    /**
+     * This method is for testing purpose only
+     *
+     * @param string $name
+     * @param AbstractModule $module
+     */
+    public function setModule(string $name, AbstractModule $module): void
     {
-        $domain = $row['domain'];
-        foreach (arr::csplit($row['nss']) as $host) {
-            if (substr($host,-strlen($domain))==$domain) $my_nss[$host] = $host;
-            else $nss[$host] = $host;
-        };
-        if ($my_nss) {
-            $his = $this->base->hostsGetInfo(arr::make_sub($my_nss,'host'));
-            if (err::is($his)) return $his;
-            foreach ($his as $k=>$v) $nss[$v['host']] = "$v[host],$v[ip]";
-        };
-        return $nss;
+        if (!key_exists($name, $this->modules)) {
+            throw new InvalidCallException("module `$name` not found");
+        }
+        $this->modules[$name] = $module;
+    }
 
+    public function createModule($class)
+    {
+        return new $class($this);
+    }
+
+    /**
+     * @return HttpClient
+     */
+    public function getHttpClient(): HttpClient
+    {
+        if ($this->httpClient === null) {
+            $guzzle = new \GuzzleHttp\Client(['base_uri' => $this->url]);
+            $this->httpClient = new HttpClient($guzzle);
+        }
+        return $this->httpClient;
+    }
+
+    public function setHttpClient($httpClient): self
+    {
+        $this->httpClient = $httpClient;
+
+        return $this;
+    }
+
+    /**
+     * Performs http request with specified method
+     * Direct usage is deprecated
+     *
+     * @param string $httpMethod
+     * @param object $data
+     * @return array
+     */
+    public function request(string $method, AbstractRequest $request)
+    {
+        return $this->getHttpClient()->performRequest($method, $request);
     }
 }
