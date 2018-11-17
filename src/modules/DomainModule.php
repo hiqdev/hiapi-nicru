@@ -80,14 +80,14 @@ class DomainModule extends AbstractModule
     }
 
     /**
-     *
+     * Load info about domains
      *
      * @param array $rows
-     * @return bool
+     * @return array
      */
-    public function domainsLoadInfo(array $rows) : bool
+    public function domainsLoadInfo(array $rows) : array
     {
-        return true;
+        return $this->domainsGetInfo($rows);
     }
 
     /**
