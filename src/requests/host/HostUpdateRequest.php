@@ -1,7 +1,7 @@
 <?php
 
 /**
- * hiAPI NIC.ru plugin
+ * hiAPI NicRu plugin
  *
  * @link      https://github.com/hiqdev/hiapi-nicru
  * @package   hiapi-nicru
@@ -11,8 +11,14 @@
 
 namespace hiapi\nicru\requests\host;
 
+/**
+ * Host update request composer.
+ *
+ * @author Yurii Myronchuk <bladeroot@gmail.com>
+ */
 class HostUpdateRequest extends HostAbstractRequest
 {
+    /* {@inheritdoc} */
     protected $operation = 'update';
     protected $bodyVariables = [
         'hostname' => 'host',

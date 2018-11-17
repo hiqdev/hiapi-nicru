@@ -1,7 +1,7 @@
 <?php
 
 /**
- * hiAPI NIC.ru plugin
+ * hiAPI NicRu plugin
  *
  * @link      https://github.com/hiqdev/hiapi-nicru
  * @package   hiapi-nicru
@@ -12,9 +12,14 @@
 namespace hiapi\nicru\requests\contract;
 
 use hiapi\nicru\requests\AbstractRequest;
-
+/**
+ * Contract main request composer.
+ *
+ * @author Yurii Myronchuk <bladeroot@gmail.com>
+ */
 class ContractAbstractRequest extends AbstractRequest
 {
+    /* {@inheritdoc} */
     protected $operation = 'search';
     protected $request = 'contract';
     protected $header = 'contract';
@@ -34,4 +39,13 @@ class ContractAbstractRequest extends AbstractRequest
             'code' => 'inn',
         ],
     ];
+    protected $search = [
+        'delimiter' => 'contracts-list',
+        'fields' => [
+            'contracts-found',
+            'contracts-limit',
+            'contracts-first',
+        ],
+    ];
+
 }

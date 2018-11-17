@@ -1,7 +1,7 @@
 <?php
 
 /**
- * hiAPI NIC.ru plugin
+ * hiAPI NicRu plugin
  *
  * @link      https://github.com/hiqdev/hiapi-nicru
  * @package   hiapi-nicru
@@ -11,31 +11,42 @@
 
 namespace hiapi\nicru\requests;
 
+use hiapi\nicru\exceptions\RequiredParamMissingException;
+
+/**
+ * General request functions.
+ *
+ * @author Yurii Myronchuk <bladeroot@gmail.com>
+ */
 class AbstractRequest
 {
     /** @var array **/
     protected $data = [];
     /** @var array **/
     protected $requestArray = [];
-
+    /* @var string */
     protected $operation = null;
+    /* @var string */
     protected $request = null;
+    /* @var string */
     protected $header = null;
+    /* @var string */
     protected $lang = 'en';
-    protected $limit = 1;
-    protected $first = 1;
+    /* @var array */
     protected $bodyStatic = [];
+    /* @var array */
     protected $bodyVariables = [];
-    protected $stringRequest = "";
-
+    /* @var array */
     protected $answer = [];
+    /* @var array */
+    protected $search = [];
 
     public function __construct($data, $args)
     {
         $this->data = $data;
         foreach (['operation', 'request', 'header'] as $key) {
             if (empty($this->{$key})) {
-                throw new \Exception("{$key} is required");
+                throw new RequiredParamMissingException("{$key} is required by " . __CLASS__);
             }
         }
 
@@ -71,12 +82,23 @@ class AbstractRequest
         return trim(implode("\n", $this->requestArray));
     }
 
-    public function getAnswerParams()
+    /**
+     * @param void
+     * @return array
+     */
+    public function getParseRules()
     {
-        return $this->answer;
+        return [
+            'answer' => $this->answer,
+            'search' => $this->search['delimiter'],
+        ];
     }
 
-    protected function setRequestBodyVariables($row = [])
+    /**
+     * @param array|void $row
+     * @return void
+     */
+    protected function setRequestBodyVariables($row = []) : void
     {
         foreach ($this->bodyVariables as $key => $value) {
             $func = null;

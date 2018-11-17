@@ -1,7 +1,7 @@
 <?php
 
 /**
- * hiAPI NIC.ru plugin
+ * hiAPI NicRu plugin
  *
  * @link      https://github.com/hiqdev/hiapi-nicru
  * @package   hiapi-nicru
@@ -13,8 +13,14 @@ namespace hiapi\nicru\requests\host;
 
 use hiapi\nicru\requests\AbstractRequest;
 
+/**
+ * Host main request composer.
+ *
+ * @author Yurii Myronchuk <bladeroot@gmail.com>
+ */
 class HostAbstractRequest extends AbstractRequest
 {
+    /* {@inheritdoc} */
     protected $request = 'server';
     protected $header = 'server';
     protected $bodyVariables = [

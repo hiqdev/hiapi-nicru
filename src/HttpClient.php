@@ -1,11 +1,20 @@
 <?PHP
 
+/**
+ * hiAPI NicRu plugin
+ *
+ * @link      https://github.com/hiqdev/hiapi-nicru
+ * @package   hiapi-nicru
+ * @license   BSD-3-Clause
+ * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
+ */
+
 namespace hiapi\nicru;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use hiapi\nicru\requests\AbstractRequest;
-
+use hiapi\nicru\parsers\NicRuResponseParser;
 
 class HttpClient
 {
@@ -21,7 +30,7 @@ class HttpClient
         $this->client = $client;
     }
 
-    public function performRequest (string  $httpMethod, AbstractRequest $request)
+    public function performRequest (string  $httpMethod, AbstractRequest $request) : array
     {
         $guzzleResponse = $this->request($httpMethod, $request);
         $response = $this->parseGuzzleResponse($guzzleResponse, $request);
@@ -81,6 +90,7 @@ class HttpClient
     /**
      * @param $guzzleResponse
      * @return array|int
+     * @throws \hiapi\nicru\exceptions\NicRuException
      */
     private function parseGuzzleResponse($guzzleResponse, AbstractRequest $request)
     {
@@ -88,60 +98,7 @@ class HttpClient
             throw new \Exception(trim($guzzleResponse->getReasonPhrase()));
         }
 
-        $response = mb_convert_encoding($guzzleResponse->getBody()->getContents(), 'UTF-8', 'KOI8-R');
-        $lines = explode("\n", $response);
-        if (!preg_match('#State: 200#', $lines[0])) {
-            throw new \Exception(trim(preg_replace('#State: [0-9]+#', '', $lines[0])));
-        }
-
-        $answerParams = $request->getAnswerParams();
-        if (empty($request->getAnswerParams())) {
-            return [
-                'status' => $guzzleResponse->getReasonPhrase(),
-            ];
-        }
-
-        $blocks = explode("[{$answerParams['delimiter']}]", $response);
-        $header = array_shift($blocks);
-        if (empty($blocks)) {
-            return [
-                'status' => $guzzleResponse->getReasonPhrase(),
-            ];
-        }
-
-        $i = 0;
-        foreach ($blocks as $data) {
-            $blockData = explode("\n", $data);
-            $result[$i] = null;
-            foreach ($blockData as $line) {
-                [$field, $value] = explode(":", $line, 2);
-                if (!empty($answerParams['fields'][$field])) {
-                    $result[$i] = $this->setParsedValue($answerParams['fields'][$field], $value, $result[$i]);
-                }
-            }
-            $i++;
-        }
-
-        return array_filter($result);
+        $response = trim(mb_convert_encoding($guzzleResponse->getBody()->getContents(), 'UTF-8', 'KOI8-R'));
+        return NicRuResponseParser::parse($response, $request);
     }
-
-    private function setParsedValue($field, $value, $res)
-    {
-        if (empty($res[$field])) {
-            $res[$field] = $value;
-            return $res;
-        }
-
-        if (is_array($res[$field])) {
-            $res[$field][] = $value;
-            return $res;
-        }
-
-        $tmp = $res[$field];
-        $res[$field] = [];
-        $res[$field][] = $tmp;
-        $res[$field][] = $value;
-        return $res;
-    }
-
 }

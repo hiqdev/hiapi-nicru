@@ -1,7 +1,7 @@
 <?php
 
 /**
- * hiAPI NIC.ru plugin
+ * hiAPI NicRu plugin
  *
  * @link      https://github.com/hiqdev/hiapi-nicru
  * @package   hiapi-nicru
@@ -11,11 +11,14 @@
 
 namespace hiapi\nicru\requests\domain;
 
-class DomainsSearchRequest extends DomainAbstractRequest
+/**
+ * Domain search request composer.
+ *
+ * @author Yurii Myronchuk <bladeroot@gmail.com>
+ */
+class DomainsSearchRequest extends DomainInfoRequest
 {
-    protected $operation = 'search';
-    protected $request = 'service-object';
-    protected $header = 'service-object';
+    /* {@inheritdoc} */
     protected $bodyStatic = [
         'service' => 'domain',
         'service-objects-limit' => 64000,

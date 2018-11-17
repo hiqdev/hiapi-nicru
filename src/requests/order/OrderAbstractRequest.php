@@ -1,7 +1,7 @@
 <?php
 
 /**
- * hiAPI NIC.ru plugin
+ * hiAPI NicRu plugin
  *
  * @link      https://github.com/hiqdev/hiapi-nicru
  * @package   hiapi-nicru
@@ -13,8 +13,14 @@ namespace hiapi\nicru\requests\order;
 
 use hiapi\nicru\requests\AbstractRequest;
 
+/**
+ * Abstract main request composer.
+ *
+ * @author Yurii Myronchuk <bladeroot@gmail.com>
+ */
 class OrderAbstractRequest extends AbstractRequest
 {
+    /* {@inheritdoc} */
     protected $request = 'order';
     protected $header = 'order';
     protected $bodyVariables = [

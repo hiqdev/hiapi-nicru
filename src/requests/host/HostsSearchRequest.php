@@ -1,7 +1,7 @@
 <?php
 
 /**
- * hiAPI NIC.ru plugin
+ * hiAPI NicRu plugin
  *
  * @link      https://github.com/hiqdev/hiapi-nicru
  * @package   hiapi-nicru
@@ -11,9 +11,14 @@
 
 namespace hiapi\nicru\requests\host;
 
-class HostsSearchRequest extends HostAbstractRequest
+/**
+ * Host search request composer.
+ *
+ * @author Yurii Myronchuk <bladeroot@gmail.com>
+ */
+class HostsSearchRequest extends HostInfoRequest
 {
-    protected $operation = 'search';
+    /* {@inheritdoc} */
     protected $bodyStatic = [
         'server-limit' => 64000,
         'server-first' => 1,

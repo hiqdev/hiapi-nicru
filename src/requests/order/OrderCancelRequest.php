@@ -1,7 +1,7 @@
 <?php
 
 /**
- * hiAPI NIC.ru plugin
+ * hiAPI NicRu plugin
  *
  * @link      https://github.com/hiqdev/hiapi-nicru
  * @package   hiapi-nicru
@@ -11,7 +11,13 @@
 
 namespace hiapi\nicru\requests\order;
 
+/**
+ * Order cancel request composer.
+ *
+ * @author Yurii Myronchuk <bladeroot@gmail.com>
+ */
 class OrderCancelRequest extends OrderAbstractRequest
 {
+    /* {@inheritdoc} */
     protected $operation = 'delete';
 }

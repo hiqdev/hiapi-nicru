@@ -1,6 +1,6 @@
 <?php
 /**
- * hiAPI NIC.ru plugin
+ * hiAPI NicRu plugin
  *
  * @link      https://github.com/hiqdev/hiapi-nicru
  * @package   hiapi-nicru
@@ -14,20 +14,27 @@ use hiapi\nicru\modules\AbstractModule;
 use hiapi\nicru\modules\DomainModule;
 use hiapi\nicru\modules\HostModule;
 use hiapi\nicru\requests\AbstractRequest;
-use Exception;
+use hiapi\nicru\exceptions\InvalidCallException;
+use hiapi\nicru\exceptions\RequiredParamMissingException;
 
 /**
- * NIC.ru tool.
+ * NicRu tool.
  */
 class NicRuTool extends \hiapi\components\AbstractTool
 {
-
+    /* @var string */
     protected $url;
+
+    /* @var string */
     protected $login;
+
+    /* @var string */
     protected $password;
 
+    /* @var object [[HttpClient]] */
     protected $httpClient = null;
 
+    /* @var array */
     protected $modules = [
         'domain'    => DomainModule::class,
         'domains'   => DomainModule::class,
@@ -40,7 +47,7 @@ class NicRuTool extends \hiapi\components\AbstractTool
         parent::__construct($base, $data);
         foreach (['url','login','password'] as $key) {
             if (empty($data[$key])) {
-                throw new Exception("`$key` must be given for NicRuTool");
+                throw new RequiredParamMissingException("`$key` must be given for NicRuTool");
             }
             $this->{$key} = $data[$key];
         }
@@ -60,6 +67,10 @@ class NicRuTool extends \hiapi\components\AbstractTool
         return $this->{$name};
     }
 
+    /**
+     * @param string $name
+     * @return class
+     */
     public function getModule($name)
     {
         if (empty($this->modules[$name])) {
@@ -81,12 +92,16 @@ class NicRuTool extends \hiapi\components\AbstractTool
      */
     public function setModule(string $name, AbstractModule $module): void
     {
-        if (!key_exists($name, $this->modules)) {
+        if (empty($this->modules[$name])) {
             throw new InvalidCallException("module `$name` not found");
         }
         $this->modules[$name] = $module;
     }
 
+    /**
+     * @param class $class
+     * @return object of $class
+     */
     public function createModule($class)
     {
         return new $class($this);
@@ -104,6 +119,10 @@ class NicRuTool extends \hiapi\components\AbstractTool
         return $this->httpClient;
     }
 
+    /**
+     * @param object [[HttpClient]] $httpClient
+     * @return object [[NicRuTool]]
+     */
     public function setHttpClient($httpClient): self
     {
         $this->httpClient = $httpClient;
@@ -116,7 +135,7 @@ class NicRuTool extends \hiapi\components\AbstractTool
      * Direct usage is deprecated
      *
      * @param string $httpMethod
-     * @param object $data
+     * @param object $request
      * @return array
      */
     public function request(string $method, AbstractRequest $request)

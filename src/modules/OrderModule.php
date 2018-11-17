@@ -1,9 +1,9 @@
 <?php
 /**
- * hiAPI Directi plugin
+ * hiAPI NicRu plugin
  *
- * @link      https://github.com/hiqdev/hiapi-directi
- * @package   hiapi-directi
+ * @link      https://github.com/hiqdev/hiapi-nicru
+ * @package   hiapi-nicru
  * @license   BSD-3-Clause
  * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
  */
@@ -14,7 +14,7 @@ use hiapi\nicru\requests\order\OrderInfoRequest;
 use hiapi\nicru\requests\order\OrderCancelRequest;
 
 /**
- * Domain operations.
+ * Order operations.
  *
  * @author Andrii Vasyliev <sol@hiqdev.com>
  */
@@ -23,12 +23,15 @@ class OrderModule extends AbstractModule
     const STATE_FAILED = 'failed';
     const STATE_DELETED = 'deleted';
 
-    public function orderInfo($row)
+    /**
+     * @param array
+     * @return array
+     */
+    public function orderInfo($row) : array
     {
         unset($row['contract']);
         $request = new OrderInfoRequest($this->tool->data, $row);
         $res = $this->post($request);
-        $res = reset($res);
         if (in_array(self::STATE_FAILED, $res['state'], true) || in_array(self::STATE_DELETED, $res['state'], true)) {
             throw new \Exception('action failed');
         }
@@ -36,10 +39,13 @@ class OrderModule extends AbstractModule
         return $res;
     }
 
+    /**
+     * @param array
+     * @return array
+     */
     public function orderCancel($row)
     {
         $request = new OrderCancelRequest($this->tool->data, $row);
-        $res = $this->post($request);
-        return reset($res);
+        return $this->post($request);
     }
 }

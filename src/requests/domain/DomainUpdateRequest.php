@@ -1,7 +1,7 @@
 <?php
 
 /**
- * hiAPI NIC.ru plugin
+ * hiAPI NicRu plugin
  *
  * @link      https://github.com/hiqdev/hiapi-nicru
  * @package   hiapi-nicru
@@ -11,8 +11,14 @@
 
 namespace hiapi\nicru\requests\domain;
 
+/**
+ * Domain update request composer.
+ *
+ * @author Yurii Myronchuk <bladeroot@gmail.com>
+ */
 class DomainUpdateRequest extends DomainAbstractRequest
 {
+    /* {@inheritdoc} */
     protected $operation = 'create';
     protected $request = 'order';
     protected $header = 'order-item';

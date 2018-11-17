@@ -1,9 +1,9 @@
 <?php
 /**
- * hiAPI Directi plugin
+ * hiAPI NicRu plugin
  *
- * @link      https://github.com/hiqdev/hiapi-directi
- * @package   hiapi-directi
+ * @link      https://github.com/hiqdev/hiapi-nicru
+ * @package   hiapi-nicru
  * @license   BSD-3-Clause
  * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
  */
@@ -14,20 +14,27 @@ use hiapi\nicru\requests\contract\ContractInfoRequest;
 use hiapi\nicru\requests\contract\ContractsSearchRequest;
 
 /**
- * Domain operations.
+ * Contract operations.
  *
- * @author Andrii Vasyliev <sol@hiqdev.com>
+ * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
 class ContractModule extends AbstractModule
 {
+    /**
+     * @param array
+     * @return array
+     */
     public function contractInfo($row)
     {
         unset($row['contract']);
         $request = new ContractInfoRequest($this->tool->data, $row);
-        $res = $this->post($request);
-        return reset($res);
+        return $this->post($request);
     }
 
+    /**
+     * @param array
+     * @return array
+     */
     public function contractsSearch($rows = [])
     {
         unset($row['contract']);

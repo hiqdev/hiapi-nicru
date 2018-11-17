@@ -1,7 +1,7 @@
 <?php
 
 /**
- * hiAPI NIC.ru plugin
+ * hiAPI NicRu plugin
  *
  * @link      https://github.com/hiqdev/hiapi-nicru
  * @package   hiapi-nicru
@@ -11,8 +11,14 @@
 
 namespace hiapi\nicru\requests\contract;
 
+/**
+ * Contract search request composer.
+ *
+ * @author Yurii Myronchuk <bladeroot@gmail.com>
+ */
 class ContractsSearchRequest extends ContractAbstractRequest
 {
+    /* {@inheritdoc} */
     protected $bodyStatic = [
         'contracts-limit' => 64000,
         'contracts-first' => 1,

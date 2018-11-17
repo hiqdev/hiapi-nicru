@@ -1,7 +1,7 @@
 <?php
 
 /**
- * hiAPI NIC.ru plugin
+ * hiAPI NicRu plugin
  *
  * @link      https://github.com/hiqdev/hiapi-nicru
  * @package   hiapi-nicru
@@ -11,7 +11,13 @@
 
 namespace hiapi\nicru\requests\order;
 
+/**
+ * Order info request composer.
+ *
+ * @author Yurii Myronchuk <bladeroot@gmail.com>
+ */
 class OrderInfoRequest extends OrderAbstractRequest
 {
+    /* {@inheritdoc} */
     protected $operation = 'get';
 }

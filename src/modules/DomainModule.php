@@ -1,9 +1,9 @@
 <?php
 /**
- * hiAPI Directi plugin
+ * hiAPI NicRu plugin
  *
- * @link      https://github.com/hiqdev/hiapi-directi
- * @package   hiapi-directi
+ * @link      https://github.com/hiqdev/hiapi-nicru
+ * @package   hiapi-nicru
  * @license   BSD-3-Clause
  * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
  */
@@ -18,7 +18,7 @@ use hiapi\nicru\requests\domain\DomainsSearchRequest;
 /**
  * Domain operations.
  *
- * @author Andrii Vasyliev <sol@hiqdev.com>
+ * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
 class DomainModule extends AbstractModule
 {
@@ -75,7 +75,6 @@ class DomainModule extends AbstractModule
     {
         $request = new DomainInfoRequest($this->tool->data, $row);
         $res = $this->post($request);
-        $res = reset($res);
         return array_merge($this->_domainPostParseRequest($res), $row);
     }
 
@@ -92,7 +91,7 @@ class DomainModule extends AbstractModule
         }
 
         $request = new DomainUpdateRequest($this->tool->data, $_row);
-        $res = reset($this->post($request));
+        $res = $this->post($request);
         $order = new OrderModule($this->tool);
         $res = $order->orderInfo(['order_id' => $res['order_id']]);
         return $row;
@@ -107,7 +106,6 @@ class DomainModule extends AbstractModule
     {
         $request = new DomainRenewRequest($this->tool->data, $row);
         $res = $this->post($request);
-        $res = reset($res);
         $order = new OrderModule($this->tool);
         $res = $order->orderInfo(['order_id' => $res['order_id']]);
         return $row;

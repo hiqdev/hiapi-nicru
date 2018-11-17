@@ -1,7 +1,7 @@
 <?php
 
 /**
- * hiAPI NIC.ru plugin
+ * hiAPI NicRu plugin
  *
  * @link      https://github.com/hiqdev/hiapi-nicru
  * @package   hiapi-nicru
@@ -12,9 +12,14 @@
 namespace hiapi\nicru\requests\domain;
 
 use hiapi\nicru\requests\AbstractRequest;
-
+/**
+ * Domain main request composer.
+ *
+ * @author Yurii Myronchuk <bladeroot@gmail.com>
+ */
 class DomainAbstractRequest extends AbstractRequest
 {
+    /* {@inheritdoc} */
     protected $request = 'service-object';
     protected $header = 'service-object';
     protected $bodyStatic = [
