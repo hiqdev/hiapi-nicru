@@ -29,6 +29,10 @@ use Exception;
  */
 class NicRuErrorParser
 {
+    /**
+     * @var array
+     * @static
+     */
     protected static $errors = [
         400 => InvalidHeaderRequestException::class,
         401 => AuthorizationException::class,
@@ -41,6 +45,10 @@ class NicRuErrorParser
         502 => NicRuServerErrorException::class,
     ];
 
+    /**
+     * @var string
+     * @static
+     */
     protected static $delimiter = 'errors';
 
     /**
@@ -50,6 +58,7 @@ class NicRuErrorParser
      * @var object [[AbstractRequest]] $request
      * @return void
      * @throws \hiapi\nicru\exceptions\NicRuException
+     * @static
      */
 
     public static function parse(string $response, AbstractRequest $request)
@@ -80,6 +89,7 @@ class NicRuErrorParser
      * @var string $message
      * @return void
      * @throws \hiapi\nicru\exceptions\NicRuException
+     * @static
      */
     protected static function throwException(int $state, string $message)
     {

@@ -38,8 +38,8 @@ class AbstractRequest
     protected $bodyVariables = [];
     /* @var array */
     protected $answer = [];
-    /* @var array */
-    protected $search = [];
+    /* @var string */
+    protected $search = null;
 
     public function __construct($data, $args)
     {
@@ -86,12 +86,40 @@ class AbstractRequest
      * @param void
      * @return array
      */
-    public function getParseRules()
+    public function getParserAnswerRules() : array
     {
-        return [
-            'answer' => $this->answer,
-            'search' => $this->search,
-        ];
+        return $this->answer;
+    }
+
+    /**
+     * @param void
+     * @return string|void
+     */
+    public function getParserSearchDelimiter() : ?string
+    {
+        return $this->search;
+    }
+
+    /**
+     * Check if request is search
+     *
+     * @param void
+     * @return bool
+     */
+    public function isSearchRequest() : bool
+    {
+        return !empty($this->search);
+    }
+
+    /**
+     * Check if parse some additional block neaded
+     *
+     * @param void
+     * @return bool
+     */
+    public function isSubInfoQueried() : bool
+    {
+        return !empty($this->answer['subinfo']);
     }
 
     /**

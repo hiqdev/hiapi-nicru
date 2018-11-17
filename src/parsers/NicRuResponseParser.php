@@ -27,6 +27,7 @@ class NicRuResponseParser
      * @var object [[AbstractRequest]] $request
      * @return array
      * @throws \hiapi\nicru\exceptions\NicRuException
+     * @static
      */
     public static function parse(string $response, AbstractRequest $request) : array
     {
@@ -34,25 +35,25 @@ class NicRuResponseParser
             return NicRuErrorParser::parse($response, $request);
         }
 
-        $parseRules = $request->getParseRules();
+        $parseRules = $request->getParserAnswerRules();
         if (empty($parseRules)) {
             throw new ParserErrorException("no parser rules provided");
         }
 
         $blocks = self::explodeToBlocks($response);
-        if ($parseRules['answer']['skipfullparse'] === true) {
-            if (empty($parseRules['answer']['fields'])) {
+        if ($parseRules['skipfullparse'] === true) {
+            if (empty($parseRules['fields'])) {
                 return [
                     'success' => true,
                 ];
             }
 
-            return self::getBlockData($blocks['header'], $parseRules['answer']['fields']);
+            return self::getBlockData($blocks['header'], $parseRules['fields']);
         }
 
         $subs = [];
-        if (!empty($parseRules['answer']['subinfo'])) {
-            foreach ($parseRules['answer']['subinfo'] as $sub) {
+        if ($request->isSubInfoQueried()) {
+            foreach ($parseRules['subinfo'] as $sub) {
                 if (empty($blocks[$sub['delimiter']])) {
                     continue;
                 }
@@ -68,20 +69,20 @@ class NicRuResponseParser
             }
         }
 
-        if (empty($blocks[$parseRules['answer']['delimiter']])) {
+        if (empty($blocks[$parseRules['delimiter']])) {
             return $subs;
         }
 
-        foreach ($blocks[$parseRules['answer']['delimiter']] as $block) {
-            $result[] = array_merge(self::getBlockData($block, $parseRules['answer']['fields']), $subs);
+        foreach ($blocks[$parseRules['delimiter']] as $block) {
+            $result[] = array_merge(self::getBlockData($block, $parseRules['fields']), $subs);
         }
 
 
-        if (empty($parseRules['search'])) {
+        if (!$request->isSearchRequest()) {
             return reset($result);
         }
 
-        $searchData = self::getSearchData($blocks[$parseRules['search']]);
+        $searchData = self::getSearchData($blocks[$request->getParserSearchDelimiter()]);
         if ($searchData['limit'] === 1) {
             return reset($result);
         }
@@ -94,6 +95,7 @@ class NicRuResponseParser
      *
      * @param string $response
      * @return array of arrays
+     * @static
      */
     private static function explodeToBlocks(string $response) : array
     {
@@ -147,6 +149,7 @@ class NicRuResponseParser
      * @param string $value
      * @param array|null $res
      * @return array
+     * @static
      */
     private static function setParsedValue(string $field, string $value, $res) : array
     {
@@ -170,6 +173,7 @@ class NicRuResponseParser
     /**
      * @param array $block
      * @return array
+     * @static
      */
     private static function getSearchData($block) : array
     {
