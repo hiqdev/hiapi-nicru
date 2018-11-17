@@ -77,7 +77,8 @@ class HostModule extends AbstractModule
     {
         $request = new HostInfoRequest($this->tool->data, $row);
         $res = $this->post($request);
-        return is_array($res) ? array_merge($res, $row, ['exists' => 1]) : array_merge($row, ['exists' => 0]);
+        $res['exists'] = !empty($res);
+        return $res;
     }
 
     /**
