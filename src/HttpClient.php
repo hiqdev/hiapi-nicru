@@ -16,6 +16,11 @@ use GuzzleHttp\Psr7\Response;
 use hiapi\nicru\requests\AbstractRequest;
 use hiapi\nicru\parsers\NicRuResponseParser;
 
+/**
+ * Perform GuzzleHttp request and return parsed response
+ *
+ * @author Yurii Myronchuk <bladeroot@gmail.com>
+ */
 class HttpClient
 {
     /* @var object [[Client]] */
