@@ -12,6 +12,7 @@ namespace hiapi\nicru\modules;
 
 use hiapi\nicru\requests\order\OrderInfoRequest;
 use hiapi\nicru\requests\order\OrderCancelRequest;
+use hiapi\nicru\exceptions\OrderProcessingException;
 
 /**
  * Order operations.
@@ -36,7 +37,7 @@ class OrderModule extends AbstractModule
         $request = new OrderInfoRequest($this->tool->data, $row);
         $res = $this->post($request);
         if (in_array(self::STATE_FAILED, $res['state'], true) || in_array(self::STATE_DELETED, $res['state'], true)) {
-            throw new \Exception('action failed');
+            throw new OrderProcessingException('action is failed');
         }
 
         return $res;
