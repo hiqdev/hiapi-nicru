@@ -108,6 +108,9 @@ class NicRuTool extends \hiapi\components\AbstractTool
     }
 
     /**
+     * Getter for httpClient
+     *
+     * @param void
      * @return HttpClient
      */
     public function getHttpClient(): HttpClient
@@ -120,10 +123,12 @@ class NicRuTool extends \hiapi\components\AbstractTool
     }
 
     /**
+     * Setter for httpClient
+     *
      * @param object [[HttpClient]] $httpClient
      * @return object [[NicRuTool]]
      */
-    public function setHttpClient($httpClient): self
+    public function setHttpClient(HttpClient $httpClient): self
     {
         $this->httpClient = $httpClient;
 
