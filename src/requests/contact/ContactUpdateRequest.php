@@ -1,7 +1,7 @@
 <?php
 
 /**
- * hiAPI NicRu plugin
+ * hiAPI NIC.ru plugin
  *
  * @link      https://github.com/hiqdev/hiapi-nicru
  * @package   hiapi-nicru

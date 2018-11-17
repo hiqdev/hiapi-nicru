@@ -4,8 +4,11 @@
     "description": "hiAPI NIC.ru plugin",
     "keywords": [
         "hiapi",
-        "hipnale",
-        "nic.ru"
+        "hipanel",
+        "nic.ru",
+        "registrar",
+        "registry",
+        "domains"
     ],
     "homepage": "https://github.com/hiqdev/hiapi-nicru",
     "license": "BSD-3-Clause",

@@ -1,6 +1,6 @@
 <?php
 /**
- * hiAPI NicRu plugin
+ * hiAPI NIC.ru plugin
  *
  * @link      https://github.com/hiqdev/hiapi-nicru
  * @package   hiapi-nicru
@@ -18,7 +18,7 @@ use hiapi\nicru\exceptions\InvalidCallException;
 use hiapi\nicru\exceptions\RequiredParamMissingException;
 
 /**
- * NicRu tool.
+ * NIC.ru tool.
  */
 class NicRuTool extends \hiapi\components\AbstractTool
 {
