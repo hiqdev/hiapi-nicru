@@ -14,6 +14,7 @@ use hiapi\nicru\requests\domain\DomainInfoRequest;
 use hiapi\nicru\requests\domain\DomainRenewRequest;
 use hiapi\nicru\requests\domain\DomainUpdateRequest;
 use hiapi\nicru\requests\domain\DomainsSearchRequest;
+use hiapi\nicru\requests\service\ServicesSearchRequest;
 
 /**
  * Domain operations.
@@ -56,6 +57,18 @@ class DomainModule extends AbstractModule
      */
     public function domainsLoadNicRu($rows = []) : array
     {
+
+        $request = new ServicesSearchRequest($this->tool->data, [
+            'service' => 'domain',
+        ]);
+        $result = $this->post($request);
+        foreach ($result as $info) {
+            $info = $this->_domainPostParseRequest($info);
+            $domains[$info['domain']] = $info;
+        }
+
+        return $domains;
+
         unset($rows['access_od'], $rows['dummy']);
         $contract = new ContractModule($this->tool);
         $contracts = $contract->contractsSearch([]);
