@@ -17,7 +17,7 @@ use hiapi\nicru\requests\NicRuRequestInterface;
  *
  * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
-class DomainAbstractRequest extends AbstractRequest implements NicRuRequestInterface
+abstract class DomainAbstractRequest extends AbstractRequest implements NicRuRequestInterface
 {
     /* {@inheritdoc} */
     protected $request = 'service-object';

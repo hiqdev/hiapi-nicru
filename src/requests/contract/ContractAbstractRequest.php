@@ -18,7 +18,7 @@ use hiapi\nicru\requests\NicRuRequestInterface;
  *
  * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
-class ContractAbstractRequest extends AbstractRequest implements NicRuRequestInterface
+abstract class ContractAbstractRequest extends AbstractRequest implements NicRuRequestInterface
 {
     /* {@inheritdoc} */
     protected $request = 'contract';
