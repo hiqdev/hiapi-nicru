@@ -27,12 +27,5 @@ class DomainInfoRequest extends DomainAbstractRequest
         'service-objects-limit' => 1,
         'service-objects-first' => 1,
     ];
-    protected $search = [
-        'delimiter' => 'service-objects-list',
-        'fields' => [
-            'service-objects-limit',
-            'service-objects-found',
-            'service-objects-first',
-        ],
-    ];
+    protected $search = 'service-objects-list';
 }

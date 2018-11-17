@@ -90,7 +90,7 @@ class AbstractRequest
     {
         return [
             'answer' => $this->answer,
-            'search' => $this->search['delimiter'],
+            'search' => $this->search,
         ];
     }
 

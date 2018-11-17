@@ -20,32 +20,6 @@ use hiapi\nicru\requests\AbstractRequest;
 class ContractAbstractRequest extends AbstractRequest
 {
     /* {@inheritdoc} */
-    protected $operation = 'search';
     protected $request = 'contract';
     protected $header = 'contract';
-    protected $bodyStatic = [
-        'contracts-limit' => 1,
-        'contracts-first' => 1,
-    ];
-    protected $answer = [
-        'delimiter' => 'contract',
-        'fields' => [
-            'contract-num' => 'contract',
-            'phone' => 'phone',
-            'email' => 'email',
-            'person' => 'name',
-            'passport' => 'passport',
-            'org' => 'organization',
-            'code' => 'inn',
-        ],
-    ];
-    protected $search = [
-        'delimiter' => 'contracts-list',
-        'fields' => [
-            'contracts-found',
-            'contracts-limit',
-            'contracts-first',
-        ],
-    ];
-
 }

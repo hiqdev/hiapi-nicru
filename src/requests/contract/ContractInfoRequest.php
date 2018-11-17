@@ -19,7 +19,25 @@ namespace hiapi\nicru\requests\contract;
 class ContractInfoRequest extends ContractAbstractRequest
 {
     /* {@inheritdoc} */
+    protected $operation = 'search';
+    protected $bodyStatic = [
+        'contracts-limit' => 1,
+        'contracts-first' => 1,
+    ];
     protected $bodyVariables = [
         'domain' => 'domain',
     ];
+    protected $answer = [
+        'delimiter' => 'contract',
+        'fields' => [
+            'contract-num' => 'contract',
+            'phone' => 'phone',
+            'email' => 'email',
+            'person' => 'name',
+            'passport' => 'passport',
+            'org' => 'organization',
+            'code' => 'inn',
+        ],
+    ];
+    protected $search = 'contracts-list';
 }

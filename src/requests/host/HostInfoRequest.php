@@ -24,13 +24,5 @@ class HostInfoRequest extends HostAbstractRequest
         'server-limit' => 1,
         'server-first' => 1,
     ];
-    protected $search = [
-        'delimiter' => 'server-list',
-        'fields' => [
-            'servers-found',
-            'server-limit',
-            'server-first',
-        ],
-    ];
-
+    protected $search = 'server-list';
 }

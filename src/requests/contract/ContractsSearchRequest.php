@@ -16,11 +16,12 @@ namespace hiapi\nicru\requests\contract;
  *
  * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
-class ContractsSearchRequest extends ContractAbstractRequest
+class ContractsSearchRequest extends ContractInfoRequest
 {
     /* {@inheritdoc} */
     protected $bodyStatic = [
         'contracts-limit' => 64000,
         'contracts-first' => 1,
     ];
+    protected $bodyVariables = [];
 }
