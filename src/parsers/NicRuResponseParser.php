@@ -40,9 +40,53 @@ class NicRuResponseParser
             throw new ParserErrorException("no parser rules provided");
         }
 
+        $blocks = self::explodeToBlocks($response);
+        if ($parseRules['answer']['skipfullparse'] === true) {
+            if (empty($parseRules['answer']['fields'])) {
+                return [
+                    'success' => true,
+                ];
+            }
+
+            return self::getBlockData($blocks['header'], $parseRules['answer']['fields']);
+        }
+        if (empty($blocks[$parseRules['answer']['delimiter']])) {
+            return [];
+        }
+
+        foreach ($blocks[$parseRules['answer']['delimiter']] as $block) {
+            $result[] = self::getBlockData($block, $parseRules['answer']['fields']);
+        }
+
+        if (empty($parseRules['search'])) {
+            return reset($result);
+        }
+
+        $searchData = self::getSearchData($blocks[$parseRules['search']]);
+        if ($searchData['limit'] === 1) {
+            return reset($result);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Explode response to blocks
+     *
+     * @param string $response
+     * @return array of arrays
+     */
+    private static function explodeToBlocks(string $response) : array
+    {
+        if (mb_strpos($response, "[") === false) {
+            return [
+                'header' => explode("\n", trim($response)),
+            ];
+        }
+        $header = trim(mb_substr($response, 0, mb_strpos($response, "[")));
+        $blocks['header'] = explode("\n", $header);
         $response = mb_substr($response, mb_strpos($response, "["));
         $blockName = null;
-        $block = [];
         $i = 0;
         foreach (explode("\n", $response) as $line) {
             if (empty($line)) {
@@ -59,28 +103,21 @@ class NicRuResponseParser
             $blocks[$blockName][$i][] = $line;
         }
 
-        if (empty($blocks[$parseRules['answer']['delimiter']])) {
-            return [];
-        }
+        return $blocks;
+    }
 
-        $i = 0;
-        foreach ($blocks[$parseRules['answer']['delimiter']] as $block) {
-            foreach ($block as $line) {
-                [$field, $value] = explode(":", $line, 2);
-                if (isset($parseRules['answer']['fields'][$field])) {
-                    $result[$i] = self::setParsedValue($parseRules['answer']['fields'][$field], $value, $result[$i]);
-                }
+    /**
+     * @param array $block
+     * @param array $fields
+     * @return array
+     */
+    private static function getBlockData(array $block, array $fields) : array
+    {
+        foreach ($block as $line) {
+            [$field, $value] = explode(":", $line, 2);
+            if (isset($fields[$field])) {
+                $result = self::setParsedValue($fields[$field], $value, $result);
             }
-            $i++;
-        }
-
-        if (empty($parseRules['search'])) {
-            return reset($result);
-        }
-
-        $searchData = self::setSearchData($blocks[$parseRules['search']]);
-        if ($searchData['limit'] === 1) {
-            return reset($result);
         }
 
         return $result;
@@ -92,7 +129,7 @@ class NicRuResponseParser
      * @param array|null $res
      * @return array
      */
-    private static function setParsedValue($field, $value, $res) : array
+    private static function setParsedValue(string $field, string $value, $res) : array
     {
         if (empty($res[$field])) {
             $res[$field] = $value;
@@ -115,7 +152,7 @@ class NicRuResponseParser
      * @param array $block
      * @return array
      */
-    private static function setSearchData($block) : array
+    private static function getSearchData($block) : array
     {
         $block = reset($block);
         foreach ($block as $line) {
