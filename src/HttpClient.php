@@ -18,9 +18,8 @@ use hiapi\nicru\parsers\NicRuResponseParser;
 
 class HttpClient
 {
+    /* @var object [[Client]] */
     protected $client;
-
-    protected $successCode = 200;
 
     /**
      * @param Client $client
@@ -30,6 +29,12 @@ class HttpClient
         $this->client = $client;
     }
 
+    /**
+     * Perform http request
+     * @param string $httpMethod
+     * @param object [[AbstractRequest]] $request
+     * @return array
+     */
     public function performRequest (string  $httpMethod, AbstractRequest $request) : array
     {
         $guzzleResponse = $this->request($httpMethod, $request);
@@ -38,33 +43,30 @@ class HttpClient
     }
 
     /**
-     * @param string $command
      * @param array $data
      * @return Response
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function fetchGet (string $command, AbstractRequest $request): Response
+    public function fetchGet (AbstractRequest $request): Response
     {
-        $query = $command . '?' . $this->prepareQuery($reuqest);
+        $query = '?' . $this->prepareQuery($reuqest);
         return $this->client->request('GET', $query);
     }
 
     /**
-     * @param string $command
      * @param array|null $data
      * @return Response
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function fetchPost (string $command, AbstractRequest $request): Response
+    public function fetchPost (AbstractRequest $request): Response
     {
         $query = $this->prepareQuery($request);
-        $res = $this->client->request('POST',  $command, [
+        return $this->client->request('POST', '', [
             'body' => $query,
             'headers' => [
                 'Content-Type' => 'application/x-www-form-urlencoded',
             ],
         ]);
-        return $res;
     }
 
     /**
@@ -76,23 +78,29 @@ class HttpClient
         return "SimpleRequest=" . urlencode(sprintf("%s", $request));
     }
 
+    /**
+     * @param string $httpMethod
+     * @param object [[AbstractRequest]] $request
+     * @return array|null
+     */
     private function request (string $httpMethod, AbstractRequest $request): ?Response
     {
         if (!strcasecmp($httpMethod, 'GET')) {
-            return $this->fetchGet('', $request);
+            return $this->fetchGet($request);
         }
-        else if (!strcasecmp($httpMethod, 'POST')) {
-            return $this->fetchPost('', $request);
+
+        if (!strcasecmp($httpMethod, 'POST')) {
+            return $this->fetchPost($request);
         }
         return null;
     }
 
     /**
-     * @param $guzzleResponse
+     * @param Response $guzzleResponse
      * @return array|int
      * @throws \hiapi\nicru\exceptions\NicRuException
      */
-    private function parseGuzzleResponse($guzzleResponse, AbstractRequest $request)
+    private function parseGuzzleResponse(Response $guzzleResponse, AbstractRequest $request)
     {
         if ($guzzleResponse->getStatusCode() !== 200) {
             throw new \Exception(trim($guzzleResponse->getReasonPhrase()));
