@@ -24,7 +24,7 @@ class ContractModule extends AbstractModule
      * @param array
      * @return array
      */
-    public function contractInfo($row)
+    public function contractInfo(array $row) : array
     {
         unset($row['contract']);
         $request = new ContractInfoRequest($this->tool->data, $row);
@@ -32,10 +32,10 @@ class ContractModule extends AbstractModule
     }
 
     /**
-     * @param array
+     * @param array|void
      * @return array
      */
-    public function contractsSearch($rows = [])
+    public function contractsSearch($rows = []) : array
     {
         unset($row['contract']);
         $request = new ContractsSearchRequest($this->tool->data, $rows);

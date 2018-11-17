@@ -50,10 +50,13 @@ class HostModule extends AbstractModule
     }
 
     /**
+     * Delete hosts
+     *
      * @param array of array $rows
      * @return array
+     * @throws \hiapi\nicru\exceptions\NicRuException
      */
-    public function hostsDelete($rows) : array
+    public function hostsDelete(array $rows) : array
     {
         foreach ($rows as $id => $row) {
             $host = new HostModule($this->tool);
@@ -64,8 +67,11 @@ class HostModule extends AbstractModule
     }
 
     /**
-     * @param array
+     * Get info about host
+     *
+     * @param array $row
      * @return array
+     * @throws \hiapi\nicru\exceptions\NicRuException
      */
     protected function hostInfo(array $row): array
     {
@@ -75,10 +81,13 @@ class HostModule extends AbstractModule
     }
 
     /**
-     * @param array
+     * Set info to host
+     *
+     * @param array $row
      * @return array
+     * @throws \hiapi\nicru\exceptions\NicRuException
      */
-    protected function hostSet($row)
+    protected function hostSet(array $row) : array
     {
         $parts = explode(".", $row['domain']);
         if (count($parts) > 2) {
@@ -94,20 +103,25 @@ class HostModule extends AbstractModule
     }
 
     /**
-     * @param array
+     * Delete host
+     * @param array $row
      * @return array
+     * @throws \hiapi\nicru\exceptions\NicRuException
      */
-    protected function hostDelete($row)
+    protected function hostDelete(array $row) : array
     {
         $request = new HostDeleteRequest($this->tool->data, $row);
         return $this->post($request);
     }
 
     /**
-     * @param array
+     * Update/Create host for GTLD domains
+     *
+     * @param array $row
      * @return array
+     * @throws \hiapi\nicru\exceptions\NicRuException
      */
-    protected function hostSetNative($row)
+    protected function hostSetNative(array $row) : array
     {
         $info = $this->hostInfo($row);
         if ($info['exists']) {
@@ -120,10 +134,13 @@ class HostModule extends AbstractModule
     }
 
     /**
-     * @param array
+     * Update/Create host using domainUpdate procedure
+     *
+     * @param array $row
      * @return array
+     * @throws \hiapi\nicru\exceptions\NicRuException
      */
-    protected function hostSetViaDomain($row)
+    protected function hostSetViaDomain(array $row) : array
     {
         $domain = new DomainModule($this->tool);
         $info = $domain->domainInfo($row);

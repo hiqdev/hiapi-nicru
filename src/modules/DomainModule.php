@@ -26,13 +26,19 @@ class DomainModule extends AbstractModule
      * @param array $row
      * @return array
      */
-
     protected $domainStatuses = [
         0 => 'ok',
     ];
 
     /// XXX REWRITE
-    public function domainsGetInfo($rows)
+    /**
+     * Get info about domains
+     *
+     * @param array $rows
+     * @return array
+     * @throws \hiapi\nicru\exceptions\NicRuException
+     */
+    public function domainsGetInfo(array $rows) :array
     {
         foreach ($rows as $id=>$row) {
             $tmp = new DomainModule($this->tool);
@@ -41,7 +47,14 @@ class DomainModule extends AbstractModule
         return $res;
     }
 
-    public function domainsLoadNicRu($rows = [])
+    /**
+     * Load info about all domain
+     *
+     * @param array|void $rows
+     * @return array
+     * @throws \hiapi\nicru\exceptions\NicRuException
+     */
+    public function domainsLoadNicRu($rows = []) : array
     {
         unset($rows['access_od'], $rows['dummy']);
         $contract = new ContractModule($this->tool);
@@ -66,11 +79,24 @@ class DomainModule extends AbstractModule
         return $domains;
     }
 
-    public function domainsLoadInfo($rows)
+    /**
+     *
+     *
+     * @param array $rows
+     * @return bool
+     */
+    public function domainsLoadInfo(array $rows) : bool
     {
         return true;
     }
 
+    /**
+     * Get info about domain
+     *
+     * @param array $row
+     * @return array
+     * @throws \hiapi\nicru\exceptions\NicRuException
+     */
     protected function domainInfo(array $row): array
     {
         $request = new DomainInfoRequest($this->tool->data, $row);
@@ -78,7 +104,14 @@ class DomainModule extends AbstractModule
         return array_merge($this->_domainPostParseRequest($res), $row);
     }
 
-    protected function domainUpdate($row)
+    /**
+     * Set info about domain
+     *
+     * @param array $row
+     * @return array
+     * @throws \hiapi\nicru\exceptions\NicRuException
+     */
+    protected function domainUpdate(array $row) : array
     {
         $_row = $row;
         if ($_row['nss']) {
@@ -97,12 +130,26 @@ class DomainModule extends AbstractModule
         return $row;
     }
 
-    protected function domainSetNSs($row)
+    /**
+     * Set NSs to domain
+     *
+     * @param array $row
+     * @return array
+     * @throws \hiapi\nicru\exceptions\NicRuException
+     */
+    protected function domainSetNSs(array $row) : array
     {
         return $this->domainUpdate($row);
     }
 
-    protected function domainRenew($row)
+    /**
+     * Renew domain
+     *
+     * @param array $row
+     * @return array
+     * @throws \hiapi\nicru\exceptions\NicRuException
+     */
+    protected function domainRenew(array $row) : array
     {
         $request = new DomainRenewRequest($this->tool->data, $row);
         $res = $this->post($request);
@@ -111,7 +158,13 @@ class DomainModule extends AbstractModule
         return $row;
     }
 
-    protected function _domainPostParseRequest($domain)
+    /**
+     * Postprocess domain info
+     *
+     * @param array $domain
+     * @return array
+     */
+    protected function _domainPostParseRequest(array $domain) : array
     {
         $domain['domain'] = strtolower($domain['domain']);
         $domain['expires'] = date("Y-m-d H:i:s", strtotime($domain['expires']));

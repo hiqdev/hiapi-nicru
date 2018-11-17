@@ -16,7 +16,7 @@ use hiapi\nicru\requests\order\OrderCancelRequest;
 /**
  * Order operations.
  *
- * @author Andrii Vasyliev <sol@hiqdev.com>
+ * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
 class OrderModule extends AbstractModule
 {
@@ -24,10 +24,13 @@ class OrderModule extends AbstractModule
     const STATE_DELETED = 'deleted';
 
     /**
-     * @param array
+     * Get info about order
+     *
+     * @param array $row
      * @return array
+     * @throws \hiapi\nicru\exceptions\NicRuException
      */
-    public function orderInfo($row) : array
+    public function orderInfo(array $row) : array
     {
         unset($row['contract']);
         $request = new OrderInfoRequest($this->tool->data, $row);
@@ -40,10 +43,13 @@ class OrderModule extends AbstractModule
     }
 
     /**
-     * @param array
+     * Cancel order
+     *
+     * @param array $row
      * @return array
+     * @throws \hiapi\nicru\exceptions\NicRuException
      */
-    public function orderCancel($row)
+    public function orderCancel(array $row) : array
     {
         $request = new OrderCancelRequest($this->tool->data, $row);
         return $this->post($request);
