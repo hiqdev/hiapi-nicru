@@ -45,10 +45,12 @@ class NicRuErrorParser
     protected static $delimiter = 'errors';
 
     /**
+     * Parse response during error
+     *
      * @var string $response
      * @var object [[AbstractRequest]] $request
      * @return void
-     * @throws NicRuExceptions
+     * @throws \hiapi\nicru\exceptions\NicRuException
      */
 
     public static function parse(string $response, AbstractRequest $request)
@@ -73,10 +75,12 @@ class NicRuErrorParser
     }
 
     /**
+     * Generate exception
+     *
      * @var int $state
      * @var string $message
      * @return void
-     * @throws NicRuExceptions
+     * @throws \hiapi\nicru\exceptions\NicRuException
      */
     protected static function throwException(int $state, string $message)
     {

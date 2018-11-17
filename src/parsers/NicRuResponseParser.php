@@ -27,7 +27,7 @@ class NicRuResponseParser
      * @var string $response
      * @var object [[AbstractRequest]] $request
      * @return array
-     * @throws NicRuExceptions
+     * @throws \hiapi\nicru\exceptions\NicRuException
      */
     public static function parse(string $response, AbstractRequest $request) : array
     {
