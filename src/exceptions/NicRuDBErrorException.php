@@ -3,9 +3,9 @@
 namespace hiapi\nicru\exceptions;
 
 /**
- * Thrown when NicRu returned error.
+ * Thrown when Database is temporarily unavailable.
  *
- * @author Andrii Vasyliev <sol@hiqdev.com>
+ * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
 final class NicRuDBErrorException extends NicRuException implements ExceptionInterface
 {

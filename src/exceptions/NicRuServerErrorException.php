@@ -3,9 +3,9 @@
 namespace hiapi\nicru\exceptions;
 
 /**
- * Thrown when NicRu returned error.
+ * Thrown when internal error in the request module.
  *
- * @author Andrii Vasyliev <sol@hiqdev.com>
+ * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
 final class NicRuServerErrorException extends NicRuException implements ExceptionInterface
 {

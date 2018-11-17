@@ -3,9 +3,9 @@
 namespace hiapi\nicru\exceptions;
 
 /**
- * Thrown when NicRu returned error.
+ * Thrown when errors present in requested body.
  *
- * @author Andrii Vasyliev <sol@hiqdev.com>
+ * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
 final class InvalidBodyRequestException extends NicRuException implements ExceptionInterface
 {

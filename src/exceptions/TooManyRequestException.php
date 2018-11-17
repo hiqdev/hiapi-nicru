@@ -3,9 +3,9 @@
 namespace hiapi\nicru\exceptions;
 
 /**
- * Thrown when NicRu returned error.
+ * Thrown when Surpassing the allowed request number.
  *
- * @author Andrii Vasyliev <sol@hiqdev.com>
+ * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
 final class TooManyRequestException extends NicRuException implements ExceptionInterface
 {

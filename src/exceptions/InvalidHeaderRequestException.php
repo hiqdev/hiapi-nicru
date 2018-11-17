@@ -3,9 +3,9 @@
 namespace hiapi\nicru\exceptions;
 
 /**
- * Thrown when NicRu returned error.
+ * Thrown when wrong request header.
  *
- * @author Andrii Vasyliev <sol@hiqdev.com>
+ * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
 final class InvalidHeaderRequestException extends NicRuException implements ExceptionInterface
 {
