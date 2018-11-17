@@ -19,7 +19,7 @@ use hiapi\nicru\exceptions\OrderProcessingException;
  *
  * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
-class OrderModule extends AbstractModule
+class OrderModule extends AbstractModule implements ObjectModuleInterface
 {
     const STATE_FAILED = 'failed';
     const STATE_DELETED = 'deleted';

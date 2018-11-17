@@ -18,7 +18,7 @@ use hiapi\nicru\requests\contract\ContractsSearchRequest;
  *
  * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
-class ContractModule extends AbstractModule
+class ContractModule extends AbstractModule implements ObjectModuleInterface
 {
     /**
      * @param array

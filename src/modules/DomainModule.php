@@ -21,7 +21,7 @@ use hiapi\nicru\requests\service\ServicesSearchRequest;
  *
  * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
-class DomainModule extends AbstractModule
+class DomainModule extends AbstractModule implements ObjectModuleInterface
 {
     /**
      * @param array $row

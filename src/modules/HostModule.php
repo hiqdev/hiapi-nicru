@@ -22,7 +22,7 @@ use hiapi\nicru\exceptions\RequiredParamMissingException;
  *
  * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
-class HostModule extends AbstractModule
+class HostModule extends AbstractModule implements ObjectModuleInterface
 {
     /* @var array */
     protected $ruZones = ['ru', 'su', 'рф', 'xn--p1ai'];
@@ -34,7 +34,7 @@ class HostModule extends AbstractModule
      * @param array $args
      * @throws \hiapi\nicru\exceptions\RequiredParamMissingException
      */
-    public function __call($method, $args)
+    public function __call(string $method, array $args)
     {
         $data = array_shift($args);
         if (empty($data['domain'])) {

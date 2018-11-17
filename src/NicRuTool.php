@@ -10,6 +10,7 @@
 
 namespace hiapi\nicru;
 
+use hiapi\nicru\modules\ObjectModuleInterface;
 use hiapi\nicru\modules\AbstractModule;
 use hiapi\nicru\modules\DomainModule;
 use hiapi\nicru\modules\HostModule;
@@ -71,7 +72,7 @@ class NicRuTool extends \hiapi\components\AbstractTool
      * @param string $name
      * @return class
      */
-    public function getModule($name)
+    public function getModule($name) : ObjectModuleInterface
     {
         if (empty($this->modules[$name])) {
             throw new InvalidCallException("module `$name` not found");
@@ -89,20 +90,24 @@ class NicRuTool extends \hiapi\components\AbstractTool
      *
      * @param string $name
      * @param AbstractModule $module
+     * @return self
+     * @throws \hiapi\nicru\exceptions\InvalidCallException
      */
-    public function setModule(string $name, AbstractModule $module): void
+    public function setModule(string $name, AbstractModule $module): self
     {
         if (empty($this->modules[$name])) {
             throw new InvalidCallException("module `$name` not found");
         }
         $this->modules[$name] = $module;
+
+        return $this;
     }
 
     /**
      * @param class $class
-     * @return object of $class
+     * @return object [[AbstractModule]]
      */
-    public function createModule($class)
+    public function createModule($class) : AbstractModule
     {
         return new $class($this);
     }

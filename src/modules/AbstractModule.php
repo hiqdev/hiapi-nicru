@@ -21,7 +21,7 @@ use hiapi\nicru\exceptions\InvalidObjectException;
  *
  * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
-class AbstractModule
+abstract class AbstractModule implements ObjectModuleInterface
 {
     /* @var object [[NicRuTool]] */
     public $tool;
@@ -46,7 +46,7 @@ class AbstractModule
      * @param array $args
      * @throws \hiapi\nicru\requests\InvalidCallException|\hiapi\nicru\exceptions\InvalidObjectException
      */
-    public function __call($method, $args)
+    public function __call(string $method, array $args)
     {
         if (!method_exists($this, $method)) {
             throw new InvalidCallException("{$method} is not available");
