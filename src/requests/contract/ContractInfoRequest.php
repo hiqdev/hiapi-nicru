@@ -1,5 +1,4 @@
 <?php
-
 /**
  * hiAPI NIC.ru plugin
  *
