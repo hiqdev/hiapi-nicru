@@ -49,13 +49,33 @@ class NicRuResponseParser
 
             return self::getBlockData($blocks['header'], $parseRules['answer']['fields']);
         }
+
+        $subs = [];
+        if (!empty($parseRules['answer']['subinfo'])) {
+            foreach ($parseRules['answer']['subinfo'] as $sub) {
+                if (empty($blocks[$sub['delimiter']])) {
+                    continue;
+                }
+
+                if ($sub['delimiter']['limit']) {
+                    $subs[$sub['delimiter']] = self::getBlockData(reset($blocks[$sub['delimiter']]), $sub['fields']);
+                    continue;
+                }
+
+                foreach ($blocks[$sub['delimiter']] as $block) {
+                    $subs[$sub['delimiter']][] = self::getBlockData($block, $sub['fields']);
+                }
+            }
+        }
+
         if (empty($blocks[$parseRules['answer']['delimiter']])) {
-            return [];
+            return $subs;
         }
 
         foreach ($blocks[$parseRules['answer']['delimiter']] as $block) {
-            $result[] = self::getBlockData($block, $parseRules['answer']['fields']);
+            $result[] = array_merge(self::getBlockData($block, $parseRules['answer']['fields']), $subs);
         }
+
 
         if (empty($parseRules['search'])) {
             return reset($result);

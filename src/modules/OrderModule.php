@@ -23,6 +23,7 @@ class OrderModule extends AbstractModule
 {
     const STATE_FAILED = 'failed';
     const STATE_DELETED = 'deleted';
+    const STATE_RUNNING = 'running';
 
     /**
      * Get info about order
@@ -36,8 +37,10 @@ class OrderModule extends AbstractModule
         unset($row['contract']);
         $request = new OrderInfoRequest($this->tool->data, $row);
         $res = $this->post($request);
-        if (in_array(self::STATE_FAILED, $res['state'], true) || in_array(self::STATE_DELETED, $res['state'], true)) {
-            throw new OrderProcessingException('action is failed');
+        if (!empty($res['order-item'])) {
+            if (in_array($res['order-item']['state'], [self::STATE_FAILED, self::STATE_DELETED], true)) {
+                throw new OrderProcessingException('action is failed or deleted');
+            }
         }
 
         return $res;

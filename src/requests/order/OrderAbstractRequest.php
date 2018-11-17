@@ -33,5 +33,20 @@ class OrderAbstractRequest extends AbstractRequest
             'order_id' => 'order_id',
             'state' => 'state',
         ],
+        'subinfo' => [
+            [
+                'delimiter' => 'order-item',
+                'fields' => [
+                    'state' => 'state',
+                    'subject-contract' => 'contract',
+                    'admin-c' => 'admin_epp',
+                    'tech-c' => 'tech_epp',
+                    'billing-c' => 'billing_epp',
+                    'domain' => 'domain',
+                    'service-state' => 'service_state',
+                ],
+                'limit' => 1,
+            ],
+        ],
     ];
 }
