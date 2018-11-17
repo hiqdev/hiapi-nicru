@@ -10,12 +10,14 @@
 
 namespace hiapi\nicru\requests\order;
 
+use hiapi\nicru\requests\NicRuRequestInterface;
+
 /**
  * Order cancel request composer.
  *
  * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
-class OrderCancelRequest extends OrderAbstractRequest
+class OrderCancelRequest extends OrderAbstractRequest implements NicRuRequestInterface
 {
     /* {@inheritdoc} */
     protected $operation = 'delete';

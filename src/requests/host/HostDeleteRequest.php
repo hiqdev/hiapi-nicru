@@ -10,12 +10,14 @@
 
 namespace hiapi\nicru\requests\host;
 
+use hiapi\nicru\requests\NicRuRequestInterface;
+
 /**
  * Host delete request composer.
  *
  * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
-class HostDeleteRequest extends HostAbstractRequest
+class HostDeleteRequest extends HostAbstractRequest implements NicRuRequestInterface
 {
     /* {@inheritdoc} */
     protected $operation = 'delete';

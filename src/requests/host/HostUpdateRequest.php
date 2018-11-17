@@ -10,12 +10,14 @@
 
 namespace hiapi\nicru\requests\host;
 
+use hiapi\nicru\requests\NicRuRequestInterface;
+
 /**
  * Host update request composer.
  *
  * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
-class HostUpdateRequest extends HostAbstractRequest
+class HostUpdateRequest extends HostAbstractRequest implements NicRuRequestInterface
 {
     /* {@inheritdoc} */
     protected $operation = 'update';

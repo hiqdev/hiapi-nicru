@@ -11,13 +11,14 @@
 namespace hiapi\nicru\requests\order;
 
 use hiapi\nicru\requests\AbstractRequest;
+use hiapi\nicru\requests\NicRuRequestInterface;
 
 /**
  * Abstract main request composer.
  *
  * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
-class OrderAbstractRequest extends AbstractRequest
+class OrderAbstractRequest extends AbstractRequest implements NicRuRequestInterface
 {
     /* {@inheritdoc} */
     protected $request = 'order';

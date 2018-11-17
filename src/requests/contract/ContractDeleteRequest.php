@@ -11,13 +11,14 @@
 namespace hiapi\nicru\requests\contract;
 
 use hiapi\nicru\requests\AbstractRequest;
+use hiapi\nicru\requests\NicRuRequestInterface;
 
 /**
  * Contract main request composer.
  *
  * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
-class ContractDeleteRequest extends AbstractRequest
+class ContractDeleteRequest extends AbstractRequest implements NicRuRequestInterface
 {
     /* {@inheritdoc} */
     protected $operation = 'delete';

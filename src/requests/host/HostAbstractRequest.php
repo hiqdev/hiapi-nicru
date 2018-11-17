@@ -11,13 +11,14 @@
 namespace hiapi\nicru\requests\host;
 
 use hiapi\nicru\requests\AbstractRequest;
+use hiapi\nicru\requests\NicRuRequestInterface;
 
 /**
  * Host main request composer.
  *
  * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
-class HostAbstractRequest extends AbstractRequest
+class HostAbstractRequest extends AbstractRequest implements NicRuRequestInterface
 {
     /* {@inheritdoc} */
     protected $request = 'server';

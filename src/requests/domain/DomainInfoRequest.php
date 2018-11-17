@@ -10,12 +10,14 @@
 
 namespace hiapi\nicru\requests\domain;
 
+use hiapi\nicru\requests\NicRuRequestInterface;
+
 /**
  * Domain info request composer.
  *
  * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
-class DomainInfoRequest extends DomainAbstractRequest
+class DomainInfoRequest extends DomainAbstractRequest implements NicRuRequestInterface
 {
     /* {@inheritdoc} */
     protected $operation = 'search';

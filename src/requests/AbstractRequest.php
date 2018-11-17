@@ -17,7 +17,7 @@ use hiapi\nicru\exceptions\RequiredParamMissingException;
  *
  * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
-class AbstractRequest
+abstract class AbstractRequest implements NicRuRequestInterface
 {
     /** @var array **/
     protected $data = [];

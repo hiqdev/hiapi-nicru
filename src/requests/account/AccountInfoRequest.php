@@ -11,13 +11,14 @@
 namespace hiapi\nicru\requests\account;
 
 use hiapi\nicru\requests\AbstractRequest;
+use hiapi\nicru\requests\NicRuRequestInterface;
 
 /**
  * General request functions.
  *
  * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
-class AccountInfoRequest extends AbstractRequest
+class AccountInfoRequest extends AbstractRequest implements NicRuRequestInterface
 {
     /* {@inheritdoc} */
     protected $operation = 'get';

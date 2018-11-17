@@ -10,12 +10,14 @@
 
 namespace hiapi\nicru\requests\host;
 
+use hiapi\nicru\requests\NicRuRequestInterface;
+
 /**
  * Host info request composer.
  *
  * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
-class HostInfoRequest extends HostAbstractRequest
+class HostInfoRequest extends HostAbstractRequest implements NicRuRequestInterface
 {
     /* {@inheritdoc} */
     protected $operation = 'search';

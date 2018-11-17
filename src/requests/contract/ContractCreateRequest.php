@@ -10,12 +10,14 @@
 
 namespace hiapi\nicru\requests\contract;
 
+use hiapi\nicru\requests\NicRuRequestInterface;
+
 /**
  * Contract main request composer.
  *
  * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
-class ContractCreateRequest extends ContractSetRequest
+class ContractCreateRequest extends ContractSetRequest implements NicRuRequestInterface
 {
     /* {@inheritdoc} */
     protected $operation = 'create';

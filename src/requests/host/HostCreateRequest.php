@@ -10,12 +10,14 @@
 
 namespace hiapi\nicru\requests\host;
 
+use hiapi\nicru\requests\NicRuRequestInterface;
+
 /**
  * Host create request composer.
  *
  * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
-class HostCreateRequest extends HostAbstractRequest
+class HostCreateRequest extends HostAbstractRequest implements NicRuRequestInterface
 {
     /* {@inheritdoc} */
     protected $operation = 'create';

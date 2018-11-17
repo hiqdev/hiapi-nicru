@@ -11,12 +11,13 @@
 namespace hiapi\nicru\requests\domain;
 
 use hiapi\nicru\requests\AbstractRequest;
+use hiapi\nicru\requests\NicRuRequestInterface;
 /**
  * Domain main request composer.
  *
  * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
-class DomainAbstractRequest extends AbstractRequest
+class DomainAbstractRequest extends AbstractRequest implements NicRuRequestInterface
 {
     /* {@inheritdoc} */
     protected $request = 'service-object';

@@ -10,12 +10,14 @@
 
 namespace hiapi\nicru\requests\contact;
 
+use hiapi\nicru\requests\NicRuRequestInterface;
+
 /**
  * Contact delete request composer.
  *
  * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
-class ContactDeleteRequest extends ContactAbstractRequest
+class ContactDeleteRequest extends ContactAbstractRequest implements NicRuRequestInterface
 {
     /* {@inheritdoc} */
     protected $operation = 'delete';

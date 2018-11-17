@@ -10,12 +10,14 @@
 
 namespace hiapi\nicru\requests\domain;
 
+use hiapi\nicru\requests\NicRuRequestInterface;
+
 /**
  * Domain renew request composet.
  *
  * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
-class DomainRenewRequest extends DomainAbstractRequest
+class DomainRenewRequest extends DomainAbstractRequest implements NicRuRequestInterface
 {
     /* {@inheritdoc} */
     protected $operation = 'create';

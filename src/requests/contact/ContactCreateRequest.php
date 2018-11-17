@@ -10,12 +10,14 @@
 
 namespace hiapi\nicru\requests\contact;
 
+use hiapi\nicru\requests\NicRuRequestInterface;
+
 /**
  * Contact info request composer.
  *
  * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
-class ContactCreateRequest extends ContactAbstractRequest
+class ContactCreateRequest extends ContactAbstractRequest implements NicRuRequestInterface
 {
     /* {@inheritdoc} */
     protected $operation = 'create';

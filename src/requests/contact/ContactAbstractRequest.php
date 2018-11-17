@@ -11,13 +11,14 @@
 namespace hiapi\nicru\requests\contact;
 
 use hiapi\nicru\requests\AbstractRequest;
+use hiapi\nicru\requests\NicRuRequestInterface;
 
 /**
  * Contact main request composer.
  *
  * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
-class ContactAbstractRequest extends AbstractRequest
+class ContactAbstractRequest extends AbstractRequest implements NicRuRequestInterface
 {
     /* {@inheritdoc} */
     protected $request = 'contact';

@@ -11,13 +11,14 @@
 namespace hiapi\nicru\requests\service;
 
 use hiapi\nicru\requests\AbstractRequest;
+use hiapi\nicru\requests\NicRuRequestInterface;
 
 /**
  * Service search request composer.
  *
  * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
-class ServicesSearchRequest extends AbstractRequest
+class ServicesSearchRequest extends AbstractRequest implements NicRuRequestInterface
 {
     /* {@inheritdoc} */
     protected $operation = 'search';

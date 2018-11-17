@@ -10,12 +10,14 @@
 
 namespace hiapi\nicru\requests\host;
 
+use hiapi\nicru\requests\NicRuRequestInterface;
+
 /**
  * Host search request composer.
  *
  * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
-class HostsSearchRequest extends HostInfoRequest
+class HostsSearchRequest extends HostInfoRequest implements NicRuRequestInterface
 {
     /* {@inheritdoc} */
     protected $bodyStatic = [

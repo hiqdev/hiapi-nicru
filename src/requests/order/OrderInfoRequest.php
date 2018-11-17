@@ -10,12 +10,14 @@
 
 namespace hiapi\nicru\requests\order;
 
+use hiapi\nicru\requests\NicRuRequestInterface;
+
 /**
  * Order info request composer.
  *
  * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
-class OrderInfoRequest extends OrderAbstractRequest
+class OrderInfoRequest extends OrderAbstractRequest implements NicRuRequestInterface
 {
     /* {@inheritdoc} */
     protected $operation = 'get';
