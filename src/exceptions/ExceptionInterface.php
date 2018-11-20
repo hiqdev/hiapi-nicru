@@ -1,5 +1,4 @@
 <?php
-
 /**
  * hiAPI NIC.ru plugin
  *
@@ -9,8 +8,13 @@
  * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
  */
 
-namespace hiapi\nicru\lib;
+namespace hiapi\nicru\exceptions;
 
-class Contact
+/**
+ * Common interface for all exceptions thrown by this library.
+ *
+ * @author Yurii Myronchuk <bladeroot@gmail.com>
+ */
+interface ExceptionInterface
 {
 }
