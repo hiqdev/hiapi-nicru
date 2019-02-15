@@ -8,12 +8,10 @@
  * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
  */
 
-return [
-    'container' => [
-        'definitions' => [
-            'nicruTool' => [
-                '__class' => \hiapi\nicru\NicRuTool::class,
-            ],
-        ],
+$definitions = [
+    'nicruTool' => [
+        '__class' => \hiapi\nicru\NicRuTool::class,
     ],
 ];
+
+return class_exists('Yii') ? ['container' => ['definitions' => $definitions]] : $definitions;
