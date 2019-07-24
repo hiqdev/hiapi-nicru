@@ -61,6 +61,7 @@ abstract class AbstractModule implements ObjectModuleInterface
             }
             $data = array_merge($contractInfo, $data);
         }
+
         return call_user_func([$this, $method], $data);
 
     }

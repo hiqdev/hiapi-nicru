@@ -41,10 +41,11 @@ class DomainModule extends AbstractModule implements ObjectModuleInterface
      */
     public function domainsGetInfo(array $rows) :array
     {
-        foreach ($rows as $id=>$row) {
+        foreach ($rows as $id => $row) {
             $tmp = new DomainModule($this->tool);
-            $res[$id] = $tmp->domainInfo($row);
+            $res[(string) $id] = array_merge($tmp->domainInfo($row), ['obj_id' => $id]);
         }
+
         return $res;
     }
 
@@ -100,7 +101,7 @@ class DomainModule extends AbstractModule implements ObjectModuleInterface
      */
     public function domainsLoadInfo(array $rows) : array
     {
-        return $this->domainsGetInfo($rows);
+        return $rows;
     }
 
     /**
