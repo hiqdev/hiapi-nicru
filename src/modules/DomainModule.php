@@ -187,6 +187,7 @@ class DomainModule extends AbstractModule implements ObjectModuleInterface
             'clientTransferProhibited' => $domain['status.transfer'] === 'ON' ? 'clientTransferProhibited' : null,
             'autoprolong' => $domain['status.autoprolong'] == 1 ? 'autoprolong' : null,
         ]));
+        $domain['nameservers'] = $domain['nss'] ? implode(',', $domain['nss']) : '';
 
         return $domain;
     }
