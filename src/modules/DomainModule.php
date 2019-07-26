@@ -43,7 +43,7 @@ class DomainModule extends AbstractModule implements ObjectModuleInterface
     {
         foreach ($rows as $id => $row) {
             $tmp = new DomainModule($this->tool);
-            $res[(string) $id] = array_merge($tmp->domainInfo($row), ['obj_id' => $id]);
+            $res[$id] = $tmp->domainInfo($row);
         }
 
         return $res;
