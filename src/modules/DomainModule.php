@@ -173,6 +173,23 @@ class DomainModule extends AbstractModule implements ObjectModuleInterface
     }
 
     /**
+     * Enable/Disable WHOISPROXY
+     *
+     * @param array $row
+     * @return array
+     * @throws \hiapi\nicru\exceptions\NicRuException
+     */
+    protected function domainSetContacts($row)
+    {
+        /// XXX DO CHECK IF WP ENABLED
+        $request = new DomainWPRequest($this->tool->data, $row);
+        $res = $this->post($request);
+        $order = new OrderModule($this->tool);
+        $res = $order->orderInfo(['order_id' => $res['order_id']]);
+        return $row;
+    }
+
+    /**
      * Postprocess domain info
      *
      * @param array $domain
