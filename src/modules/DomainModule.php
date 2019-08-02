@@ -199,7 +199,6 @@ class DomainModule extends AbstractModule implements ObjectModuleInterface
     {
         return array_merge($domain, [
             'domain' => strtolower($domain['domain']),
-            'expires' => date("Y-m-d H:i:s", strtotime($domain['expires'])),
             'statuses' => implode(",", array_filter([
                 'inactive' => $domain['status.active'] !== 'DELEGATED' ? 'inactive' : null,
                 'clientTransferProhibited' => $domain['status.transfer'] === 'ON' ? 'clientTransferProhibited' : null,
