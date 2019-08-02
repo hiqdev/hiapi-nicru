@@ -197,15 +197,16 @@ class DomainModule extends AbstractModule implements ObjectModuleInterface
      */
     protected function _domainPostParseRequest(array $domain) : array
     {
-        $domain['domain'] = strtolower($domain['domain']);
-        $domain['expires'] = date("Y-m-d H:i:s", strtotime($domain['expires']));
-        $domain['statuses'] = implode(",", array_filter([
-            'inactive' => $domain['status.active'] !== 'DELEGATED' ? 'inactive' : null,
-            'clientTransferProhibited' => $domain['status.transfer'] === 'ON' ? 'clientTransferProhibited' : null,
-            'autoprolong' => $domain['status.autoprolong'] == 1 ? 'autoprolong' : null,
-        ]));
-        $domain['nameservers'] = $domain['nss'] ? implode(',', $domain['nss']) : '';
-
-        return $domain;
+        return array_merge($domain, [
+            'domain' => strtolower($domain['domain']),
+            'expires' => date("Y-m-d H:i:s", strtotime($domain['expires'])),
+            'statuses' => implode(",", array_filter([
+                'inactive' => $domain['status.active'] !== 'DELEGATED' ? 'inactive' : null,
+                'clientTransferProhibited' => $domain['status.transfer'] === 'ON' ? 'clientTransferProhibited' : null,
+                'autoprolong' => $domain['status.autoprolong'] == 1 ? 'autoprolong' : null,
+            ])),
+            'nameservers' => $domain['nss'] ? implode(',', $domain['nss']) : '',
+            'expiration_date' => date("Y-m-d H:i:s", strtotime($domain['expires'])),
+        ]);
     }
 }
