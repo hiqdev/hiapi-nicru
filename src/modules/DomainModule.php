@@ -197,6 +197,9 @@ class DomainModule extends AbstractModule implements ObjectModuleInterface
      */
     protected function _domainPostParseRequest(array $domain) : array
     {
+        $expires = $domain['expires'];
+        unset($domain['expires']);
+
         return array_merge($domain, [
             'domain' => strtolower($domain['domain']),
             'statuses' => implode(",", array_filter([
@@ -205,7 +208,7 @@ class DomainModule extends AbstractModule implements ObjectModuleInterface
                 'autoprolong' => $domain['status.autoprolong'] == 1 ? 'autoprolong' : null,
             ])),
             'nameservers' => $domain['nss'] ? implode(',', $domain['nss']) : '',
-            'expiration_date' => date("Y-m-d H:i:s", strtotime($domain['expires'])),
+            'expiration_date' => date("Y-m-d H:i:s", strtotime($expires)),
         ]);
     }
 }
