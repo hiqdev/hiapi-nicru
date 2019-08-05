@@ -57,7 +57,7 @@ abstract class AbstractModule implements ObjectModuleInterface
             $contract = new ContractModule($this->tool);
             $contractInfo = $contract->contractInfo($data);
             if (empty($contractInfo)) {
-                throw new InvalidObjectException('contract not found');
+                throw new InvalidObjectException('Object does not exist');
             }
             $data = array_merge($contractInfo, $data);
         }
