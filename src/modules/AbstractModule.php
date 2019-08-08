@@ -13,7 +13,7 @@ namespace hiapi\nicru\modules;
 use hiapi\nicru\NicRuTool;
 use hiapi\nicru\requests\AbstractRequest;
 use hiapi\nicru\requests\OrderInfoRequest;
-use hiapi\nicru\requests\InvalidCallException;
+use hiapi\nicru\exceptions\InvalidCallException;
 use hiapi\nicru\exceptions\InvalidObjectException;
 
 /**
@@ -44,7 +44,7 @@ abstract class AbstractModule implements ObjectModuleInterface
      *
      * @param string $method
      * @param array $args
-     * @throws \hiapi\nicru\requests\InvalidCallException|\hiapi\nicru\exceptions\InvalidObjectException
+     * @throws \hiapi\nicru\exceptions\InvalidCallException|\hiapi\nicru\exceptions\InvalidObjectException
      */
     public function __call(string $method, array $args)
     {
