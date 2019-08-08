@@ -33,7 +33,7 @@ interface ObjectModuleInterface
      *
      * @param string $method
      * @param array $args
-     * @throws \hiapi\nicru\requests\InvalidCallException|\hiapi\nicru\exceptions\InvalidObjectException
+     * @throws \hiapi\nicru\exceptions\InvalidCallException|\hiapi\nicru\exceptions\InvalidObjectException
      */
     public function __call(string $method, array $args);
 
