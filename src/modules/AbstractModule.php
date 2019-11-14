@@ -28,6 +28,11 @@ abstract class AbstractModule implements ObjectModuleInterface
     /* @var object [[mrdpBase]] */
     public $base;
 
+    /* @var array: list function for emulation without errors */
+    static protected $emulatedFuncs = [
+        'domainSaveContacts',
+    ];
+
     /**
      * Create a class instance
      *
@@ -48,11 +53,16 @@ abstract class AbstractModule implements ObjectModuleInterface
      */
     public function __call(string $method, array $args)
     {
+        $data = array_shift($args);
+
         if (!method_exists($this, $method)) {
+            if (in_array($method, self::$emulatedFuncs, true)) {
+                return $data;
+            }
+
             throw new InvalidCallException("{$method} is not available");
         }
 
-        $data = array_shift($args);
         if (empty($data['contract'])) {
             $contract = new ContractModule($this->tool);
             $contractInfo = $contract->contractInfo($data);
