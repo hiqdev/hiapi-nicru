@@ -15,6 +15,8 @@ use hiapi\nicru\requests\domain\DomainRenewRequest;
 use hiapi\nicru\requests\domain\DomainUpdateRequest;
 use hiapi\nicru\requests\domain\DomainsSearchRequest;
 use hiapi\nicru\requests\service\ServicesSearchRequest;
+use hiapi\legacy\lib\deps\err;
+
 
 /**
  * Domain operations.
@@ -25,6 +27,58 @@ class PollModule extends AbstractModule implements ObjectModuleInterface
 {
     public function pollsGetNew($data = null)
     {
-        return true;
+        foreach (['expired'] as $state) {
+            $domains = $this->base->domainsSearchForPolls([
+                'status' => $state,
+                'access_id' => $this->tool->data['id'],
+            ]);
+
+            if (empty($domains)) {
+                continue;
+            }
+
+            $polls = call_user_func_array([$this, "_pollsGet" . ucfirst($state) . "Message"], [$polls, $domains]);
+        }
+
+        return empty($polls) ? true : $polls;
+
+    }
+
+    protected function _pollsGetExpiredMessage($polls = [], $domains =[])
+    {
+        if (empty($domains)) {
+            return $polls;
+        }
+
+        foreach ($domains as $domain) {
+            $data = $this->base->domainInfo($domain);
+
+            if (err::not($data)) {
+                continue;
+            }
+
+            if (strpos(err::get($data), 'Object does not exist') !== false) {
+                $this->base->domainSetStateInDb(array_merge($domain, ['state' => 'deleting']));
+                $polls[] = $this->_pollBuild($domain, [
+                    'type' => 'pendingDelete',
+                    'message' => 'domain deleted',
+                ], false);
+            }
+        }
+
+        return $polls;
+    }
+
+    private function _pollBuild($row, $data, $outgoing = false) : array
+    {
+        return array_merge([
+            'class' => 'domain',
+            'name' => $row['domain'],
+            'request_client' => $this->tool->data['name'],
+            'request_date' => date("Y-m-d H:i:s"),
+            'action_date' => date("Y-m-d H:i:s"),
+            'action_client' => $this->tool->data['name'],
+            'outgoing' => $outgoing,
+        ], $data);
     }
 }
