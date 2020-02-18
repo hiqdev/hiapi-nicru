@@ -15,6 +15,7 @@ use hiapi\nicru\modules\AbstractModule;
 use hiapi\nicru\modules\DomainModule;
 use hiapi\nicru\modules\HostModule;
 use hiapi\nicru\modules\PollModule;
+use hiapi\nicru\modules\ContactModule;
 use hiapi\nicru\requests\AbstractRequest;
 use hiapi\nicru\exceptions\InvalidCallException;
 use hiapi\nicru\exceptions\RequiredParamMissingException;
@@ -44,6 +45,8 @@ class NicRuTool extends \hiapi\components\AbstractTool
         'hosts'     => HostModule::class,
         'poll'      => PollModule::class,
         'polls'     => PollModule::class,
+        'contact'   => ContactModule::class,
+        'contacts'  => ContactModule::class,
     ];
 
     public function __construct($base = null, $data = null)

@@ -25,13 +25,17 @@ class DomainWPRequest extends DomainAbstractRequest implements NicRuRequestInter
     protected $header = 'order-item';
     protected $bodyStatic = [
         'service' => 'whois_proxy',
-        'action' => 'new',
         'template' => 'whois_proxy',
     ];
+
     protected $bodyVariables = [
         'domain' => 'domain',
         'switch' => 'switch',
+        'admin-on' => 'admin-on',
+        'tech-on' => 'tech-on',
+        'bill-on' => 'bill-on',
         'multiplier' => 'amount',
+        'action' => 'action',
     ];
 
     protected $answer = [
