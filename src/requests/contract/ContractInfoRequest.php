@@ -38,6 +38,7 @@ class ContractInfoRequest extends ContractAbstractRequest implements NicRuReques
             'passport' => 'passport',
             'org' => 'organization',
             'code' => 'inn',
+            'is-resident' => 'is_resident',
         ],
     ];
     protected $search = 'contracts-list';

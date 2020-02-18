@@ -30,7 +30,7 @@ abstract class AbstractModule implements ObjectModuleInterface
 
     /* @var array: list function for emulation without errors */
     static protected $emulatedFuncs = [
-        'domainSaveContacts',
+//        'domainSaveContacts',
     ];
 
     /**

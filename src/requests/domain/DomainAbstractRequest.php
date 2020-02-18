@@ -39,8 +39,12 @@ abstract class DomainAbstractRequest extends AbstractRequest implements NicRuReq
             'service-state' => 'status_id',
             'order_id' => 'order_id',
             'client-transfer-prohibited' => 'status.transfer',
-            'object-state' => 'status.active',
+            'object-state' => 'status.state',
             'autoprolong' => 'status.autoprolong',
+            'wp-switch' => 'wp_enabled',
+            'tech-c' => 'tech_remoteid',
+            'admin-c' => 'admin_remoteid',
+            'bill-c' => 'billing_remoteid',
         ],
     ];
 }

@@ -96,6 +96,7 @@ class HttpClient
         if (!strcasecmp($httpMethod, 'POST')) {
             return $this->fetchPost($request);
         }
+
         return null;
     }
 

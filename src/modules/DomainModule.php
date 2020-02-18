@@ -14,6 +14,7 @@ use hiapi\nicru\requests\domain\DomainInfoRequest;
 use hiapi\nicru\requests\domain\DomainRenewRequest;
 use hiapi\nicru\requests\domain\DomainUpdateRequest;
 use hiapi\nicru\requests\domain\DomainsSearchRequest;
+use hiapi\nicru\requests\domain\DomainWPRequest;
 use hiapi\nicru\requests\service\ServicesSearchRequest;
 
 /**
@@ -181,7 +182,43 @@ class DomainModule extends AbstractModule implements ObjectModuleInterface
      */
     protected function domainSetContacts($row)
     {
-        /// XXX DO CHECK IF WP ENABLED
+        return $this->domainSetWhoisProtect($row);
+    }
+
+    protected function domainSaveContacts(array $row): array
+    {
+        return $this->base->_simple_domainSaveContacts($row, false);
+    }
+
+    protected function domainEnableWhoisProtect(array $row): array
+    {
+        return $this->domainSetWhoisProtect($row, true);
+    }
+
+    protected function domainDisableWhoisProtect(array $row): array
+    {
+        return $this->domainSetWhoisProtect($row, false);
+    }
+
+    protected function domainSetWhoisProtect(array $row, bool $enable = null): array
+    {
+        $enable = $enable === null ? ($row['whois_protected'] ? true : false) : $enable;
+        $enable = $enable === true ? 'ON' : 'OFF';
+        $info = $this->domainInfo($row);
+        foreach (['switch', 'admin-on', 'tech-on', 'bill-on'] as $key) {
+            $row[$key] = $enable;
+        }
+
+        $row['action'] = 'update';
+
+        if (empty($info['wp_purchased'])) {
+            $row = array_merge($row, [
+                'amount' => 1,
+                'action' => 'new',
+                'switch' => 'ON',
+            ]);
+        }
+
         $request = new DomainWPRequest($this->tool->data, $row);
         $res = $this->post($request);
         $order = new OrderModule($this->tool);
@@ -203,12 +240,14 @@ class DomainModule extends AbstractModule implements ObjectModuleInterface
         return array_merge($domain, [
             'domain' => strtolower($domain['domain']),
             'statuses' => implode(",", array_filter([
-                'inactive' => $domain['status.active'] !== 'DELEGATED' ? 'inactive' : null,
-                'clientTransferProhibited' => $domain['status.transfer'] === 'ON' ? 'clientTransferProhibited' : null,
+                'inactive' => $domain['status.state'] !== 'DELEGATED' && $domain['status.state'] !== 'LOCK' ? 'inactive' : null,
+                'clientTransferProhibited' => ($domain['status.transfer'] === 'ON' || $domain['status.state'] === 'LOCK') ? 'clientTransferProhibited' : null,
                 'autoprolong' => $domain['status.autoprolong'] == 1 ? 'autoprolong' : null,
             ])),
             'nameservers' => $domain['nss'] ? implode(',', $domain['nss']) : '',
             'expiration_date' => date("Y-m-d H:i:s", strtotime($expires)),
+            'wp_enabled' => $domain['wp_enabled'] === 'ON',
+            'wp_purchased' => in_array($domain['wp_enabled'], ['ON', 'OFF'], true),
         ]);
     }
 }
