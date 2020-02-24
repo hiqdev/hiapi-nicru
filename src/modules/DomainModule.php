@@ -114,14 +114,6 @@ class DomainModule extends AbstractModule implements ObjectModuleInterface
     }
 
     /**
-     * Empty function
-     */
-    public function domainSaveContacts(array $row) : array
-    {
-        return $row;
-    }
-
-    /**
      * Get info about domain
      *
      * @param array $row
