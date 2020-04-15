@@ -24,6 +24,7 @@ use hiapi\nicru\requests\service\ServicesSearchRequest;
  */
 class DomainModule extends AbstractModule implements ObjectModuleInterface
 {
+    const ERROR_WP_IS_NOT_AVAILABLE = 'Errors in order item templates: For this TLD service is not available.';
     /**
      * @param array $row
      * @return array
@@ -228,7 +229,15 @@ class DomainModule extends AbstractModule implements ObjectModuleInterface
         }
 
         $request = new DomainWPRequest($this->tool->data, $row);
-        $res = $this->post($request);
+        try {
+            $res = $this->post($request);
+        } catch (\Exception $e) {
+           if ($e->getMessage() === self::ERROR_WP_IS_NOT_AVAILABLE) {
+               return $row;
+           }
+
+           throw new \Exception($e->getMessage());
+        }
         $order = new OrderModule($this->tool);
         $res = $order->orderInfo(['order_id' => $res['order_id']]);
         return $row;
@@ -242,6 +251,10 @@ class DomainModule extends AbstractModule implements ObjectModuleInterface
      */
     protected function _domainPostParseRequest(array $domain) : array
     {
+        if (empty($domain)) {
+            return ['_error' => self::ERROR_OBJECT_DOES_NOT_EXIST];
+        }
+
         $expires = $domain['expires'];
         unset($domain['expires']);
 
