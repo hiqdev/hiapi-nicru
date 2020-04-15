@@ -56,7 +56,7 @@ class PollModule extends AbstractModule implements ObjectModuleInterface
                 continue;
             }
 
-            if (strpos(err::get($data), self::OBJECT_DOES_NOT_EXIST) !== false) {
+            if (strpos(err::get($data), self::ERROR_OBJECT_DOES_NOT_EXIST) !== false) {
                 $polls[] = $this->_pollBuild($domain, [
                     'type' => 'pendingTransfer',
                     'message' => 'Transfer requested',
@@ -80,7 +80,7 @@ class PollModule extends AbstractModule implements ObjectModuleInterface
                 continue;
             }
 
-            if (strpos(err::get($data), self::OBJECT_DOES_NOT_EXIST) !== false) {
+            if (strpos(err::get($data), self::ERROR_OBJECT_DOES_NOT_EXIST) !== false) {
                 $this->base->domainSetStateInDb(array_merge($domain, ['state' => 'deleting']));
                 $polls[] = $this->_pollBuild($domain, [
                     'type' => 'pendingDelete',
@@ -101,7 +101,7 @@ class PollModule extends AbstractModule implements ObjectModuleInterface
         foreach ($domains as $id => $domain) {
             $info = $this->base->domainInfo($domain);
 
-            if (err::is($info) && strpos(err::get($info), self::OBJECT_DOES_NOT_EXIST) !== false) {
+            if (err::is($info) && strpos(err::get($info), self::ERROR_OBJECT_DOES_NOT_EXIST) !== false) {
                 $polls[] = $this->_pollBuild($domain, [
                     'type' => 'serverApproved',
                     'message' => 'Transfer approved',

@@ -23,7 +23,7 @@ use hiapi\nicru\exceptions\InvalidObjectException;
  */
 abstract class AbstractModule implements ObjectModuleInterface
 {
-    const OBJECT_DOES_NOT_EXIST = 'Object does not exist';
+    const ERROR_OBJECT_DOES_NOT_EXIST = 'Object does not exist';
 
     /* @var object [[NicRuTool]] */
     public $tool;
