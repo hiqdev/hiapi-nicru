@@ -27,7 +27,7 @@ class PollModule extends AbstractModule implements ObjectModuleInterface
 {
     public function pollsGetNew($data = null)
     {
-        foreach (['expired'] as $state) {
+        foreach (['ok', 'expired', 'outgoing'] as $state) {
             $domains = $this->base->domainsSearchForPolls([
                 'status' => $state,
                 'access_id' => $this->tool->data['id'],
@@ -41,7 +41,30 @@ class PollModule extends AbstractModule implements ObjectModuleInterface
         }
 
         return empty($polls) ? true : $polls;
+    }
 
+    protected function _pollsGetOkMessage($polls = [], $domains = [])
+    {
+        if (empty($domains)) {
+            return $polls;
+        }
+
+        foreach ($domains as $domain) {
+            $data = $this->base->domainInfo($domain);
+
+            if (err::not($data)) {
+                continue;
+            }
+
+            if (strpos(err::get($data), self::OBJECT_DOES_NOT_EXIST) !== false) {
+                $polls[] = $this->_pollBuild($domain, [
+                    'type' => 'pendingTransfer',
+                    'message' => 'Transfer requested',
+                ], true);
+            }
+        }
+
+        return $polls;
     }
 
     protected function _pollsGetExpiredMessage($polls = [], $domains =[])
@@ -57,7 +80,7 @@ class PollModule extends AbstractModule implements ObjectModuleInterface
                 continue;
             }
 
-            if (strpos(err::get($data), 'Object does not exist') !== false) {
+            if (strpos(err::get($data), self::OBJECT_DOES_NOT_EXIST) !== false) {
                 $this->base->domainSetStateInDb(array_merge($domain, ['state' => 'deleting']));
                 $polls[] = $this->_pollBuild($domain, [
                     'type' => 'pendingDelete',
@@ -68,6 +91,27 @@ class PollModule extends AbstractModule implements ObjectModuleInterface
 
         return $polls;
     }
+
+    protected function _pollsGetOutgoingMessage($polls = [], $domains) : array
+    {
+        if (empty($domains)) {
+            return $polls;
+        }
+
+        foreach ($domains as $id => $domain) {
+            $info = $this->base->domainInfo($domain);
+
+            if (err::is($info) && strpos(err::get($info), self::OBJECT_DOES_NOT_EXIST) !== false) {
+                $polls[] = $this->_pollBuild($domain, [
+                    'type' => 'serverApproved',
+                    'message' => 'Transfer approved',
+                ], true);
+            }
+        }
+
+        return $polls;
+    }
+
 
     private function _pollBuild($row, $data, $outgoing = false) : array
     {
