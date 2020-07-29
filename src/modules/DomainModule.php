@@ -214,6 +214,7 @@ class DomainModule extends AbstractModule implements ObjectModuleInterface
         $enable = $enable === null ? ($row['whois_protected'] ? true : false) : $enable;
         $enable = $enable === true ? 'ON' : 'OFF';
         $info = $this->domainInfo($row);
+
         foreach (['switch', 'admin-on', 'tech-on', 'bill-on'] as $key) {
             $row[$key] = $enable;
         }
