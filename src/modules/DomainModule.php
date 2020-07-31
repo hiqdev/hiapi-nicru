@@ -260,7 +260,7 @@ class DomainModule extends AbstractModule implements ObjectModuleInterface
 
         if ($domain['nss']) {
             foreach($domain['nss'] as &$nss) {
-                if (!strpos($nss, ' ') === false) {
+                if (strpos($nss, ' ') !== false) {
                     [$nss, $ip ] = explode(" ", $nss, 2);
                     $nss = "{$nss}/{$ip}";
                 }
