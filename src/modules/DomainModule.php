@@ -52,6 +52,14 @@ class DomainModule extends AbstractModule implements ObjectModuleInterface
     }
 
     /**
+     * Dubt function
+     */
+    public function domainSetPassword(array $row) : array
+    {
+        return $row;
+    }
+
+    /**
      * Load info about all domain
      *
      * @param array|void $rows
