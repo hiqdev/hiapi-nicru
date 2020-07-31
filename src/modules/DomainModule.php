@@ -258,6 +258,15 @@ class DomainModule extends AbstractModule implements ObjectModuleInterface
         $expires = $domain['expires'];
         unset($domain['expires']);
 
+        if ($domain['nss']) {
+            foreach($domain['nss'] as &$nss) {
+                if (!strpos($nss, ' ') === false) {
+                    [$nss, $ip ] = explode(" ", $nss, 2);
+                    $nss = "{$nss}/{$ip}";
+                }
+            }
+        }
+
         return array_merge($domain, [
             'domain' => strtolower($domain['domain']),
             'statuses' => implode(",", array_filter([
