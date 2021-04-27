@@ -41,7 +41,7 @@ class NicRuResponseParser
         }
 
         $blocks = self::explodeToBlocks($response);
-        if ($parseRules['skipfullparse'] === true) {
+        if (isset($parseRules['skipfullparse']) && $parseRules['skipfullparse'] === true) {
             if (empty($parseRules['fields'])) {
                 return [
                     'success' => true,
@@ -58,7 +58,7 @@ class NicRuResponseParser
                     continue;
                 }
 
-                if ($sub['delimiter']['limit']) {
+                if (isset($sub['delimiter']['limit'])) {
                     $subs[$sub['delimiter']] = self::getBlockData(reset($blocks[$sub['delimiter']]), $sub['fields']);
                     continue;
                 }
@@ -137,7 +137,7 @@ class NicRuResponseParser
         foreach ($block as $line) {
             [$field, $value] = explode(":", $line, 2);
             if (isset($fields[$field])) {
-                $result = self::setParsedValue($fields[$field], $value, $result);
+                $result = self::setParsedValue($fields[$field], $value, $result ?? null);
             }
         }
 

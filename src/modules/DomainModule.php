@@ -280,13 +280,16 @@ class DomainModule extends AbstractModule implements ObjectModuleInterface
             'domain' => strtolower($domain['domain']),
             'statuses' => implode(",", array_filter([
                 'inactive' => $domain['status.state'] !== 'DELEGATED' && $domain['status.state'] !== 'LOCK' ? 'inactive' : null,
-                'clientTransferProhibited' => ($domain['status.transfer'] === 'ON' || $domain['status.state'] === 'LOCK') ? 'clientTransferProhibited' : null,
+                'clientTransferProhibited' => (
+                        (isset($domain['status.transfer']) && $domain['status.transfer'] === 'ON')
+                    ||  (isset($domain['status.transfer']) && $domain['status.state'] === 'LOCK')
+                ) ? 'clientTransferProhibited' : null,
                 'autoprolong' => $domain['status.autoprolong'] == 1 ? 'autoprolong' : null,
             ])),
             'nameservers' => $domain['nss'] ? implode(',', $domain['nss']) : '',
             'expiration_date' => date("Y-m-d H:i:s", strtotime($expires)),
-            'wp_enabled' => $domain['wp_enabled'] === 'ON',
-            'wp_purchased' => in_array($domain['wp_enabled'], ['ON', 'OFF'], true),
+            'wp_enabled' => isset($domain['wp_enabled']) && $domain['wp_enabled'] === 'ON',
+            'wp_purchased' => in_array($domain['wp_enabled'] ?? null, ['ON', 'OFF'], true),
         ]);
     }
 }
