@@ -25,6 +25,7 @@ use hiapi\nicru\requests\service\ServicesSearchRequest;
 class DomainModule extends AbstractModule implements ObjectModuleInterface
 {
     const ERROR_WP_IS_NOT_AVAILABLE = 'Errors in order item templates: For this TLD service is not available.';
+    const ERROR_SIMILAR_OBJECT = 'Errors in order item templates: Similar object already exists';
     /**
      * @param array $row
      * @return array
@@ -219,6 +220,14 @@ class DomainModule extends AbstractModule implements ObjectModuleInterface
 
     protected function domainSetWhoisProtect(array $row, bool $enable = null): array
     {
+        if (
+            preg_match('/\.[rs]{1}u$/ui', $row['domain'])
+        ||  preg_match('/xn--p1ai$/ui', $row['domain'])
+        ||  preg_match('/рф$/ui', $row['domain'])
+        ) {
+            return $row;
+        }
+
         $enable = $enable === null ? ($row['whois_protected'] ? true : false) : $enable;
         $enable = $enable === true ? 'ON' : 'OFF';
         $info = $this->domainInfo($row);
@@ -241,7 +250,7 @@ class DomainModule extends AbstractModule implements ObjectModuleInterface
         try {
             $res = $this->post($request);
         } catch (\Exception $e) {
-           if ($e->getMessage() === self::ERROR_WP_IS_NOT_AVAILABLE) {
+           if ($e->getMessage() === self::ERROR_WP_IS_NOT_AVAILABLE || strpos($e->getMessage(), self::ERROR_SIMILAR_OBJECT) !== false) {
                return $row;
            }
 
