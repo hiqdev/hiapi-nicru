@@ -224,6 +224,7 @@ class DomainModule extends AbstractModule implements ObjectModuleInterface
             preg_match('/\.[rs]{1}u$/ui', $row['domain'])
         ||  preg_match('/xn--p1ai$/ui', $row['domain'])
         ||  preg_match('/рф$/ui', $row['domain'])
+        ||  preg_match('/fm$/ui', $row['domain'])
         ) {
             return $row;
         }
